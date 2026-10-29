@@ -1,0 +1,2305 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Proposal Sponsorship Interaktif - Exporia Himatif 2027</title>
+<style>
+  :root{
+    --teal:#0fb9b1;
+    --teal-dark:#0a8f89;
+    --purple:#6c3fc5;
+    --purple-dark:#3d1f7a;
+    --ink:#16213a;
+    --ink-soft:#42506b;
+    --line:#e3e7f0;
+    --bg:#eef1f8;
+    --gold:#f5a623;
+    --silver:#9aa7bd;
+    --pink:#ff5c8a;
+    --orange:#ff8a3d;
+  }
+
+  *{box-sizing:border-box;}
+  @page{size:A4;margin:0;}
+  html{scroll-behavior:smooth;}
+  html,body{margin:0;padding:0;}
+
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    font-size:10.5pt;
+    line-height:1.55;
+    -webkit-print-color-adjust:exact;
+    print-color-adjust:exact;
+    overflow-x:hidden;
+  }
+
+  /* ============ UI CHROME ============ */
+  .progress{
+    position:fixed;top:0;left:0;height:4px;width:0;
+    background:linear-gradient(90deg,var(--teal),var(--purple),var(--pink));
+    z-index:999;transition:width .12s linear;
+  }
+
+  .side-nav{
+    position:fixed;right:18px;top:50%;transform:translateY(-50%);
+    display:flex;flex-direction:column;gap:10px;z-index:900;
+  }
+  .side-nav a{
+    position:relative;width:11px;height:11px;border-radius:50%;
+    background:#c3cad8;display:block;transition:.25s;
+  }
+  .side-nav a:hover,.side-nav a.active{
+    background:linear-gradient(135deg,var(--teal),var(--purple));
+    transform:scale(1.45);
+  }
+  .side-nav a span{
+    position:absolute;right:22px;top:50%;transform:translateY(-50%) translateX(6px);
+    background:var(--ink);color:#fff;font-size:9px;padding:5px 9px;border-radius:6px;
+    white-space:nowrap;opacity:0;pointer-events:none;transition:.2s;
+  }
+  .side-nav a:hover span{opacity:1;transform:translateY(-50%) translateX(0);}
+
+  /* ============ PAGE ============ */
+  .page{
+    position:relative;width:210mm;min-height:297mm;margin:16px auto;
+    background:#fff;overflow:hidden;
+    box-shadow:0 10px 34px rgba(22,33,58,.16);
+  }
+  .pad{padding:18mm 17mm 20mm;}
+
+  .pagenum{
+    position:absolute;bottom:9mm;right:14mm;font-size:8.5pt;
+    color:var(--ink-soft);letter-spacing:.08em;
+  }
+  .brandbar{
+    position:absolute;bottom:0;left:0;right:0;height:6mm;
+    background:linear-gradient(90deg,var(--teal),var(--purple));
+  }
+
+  /* ============ REVEAL ============ */
+  .reveal{opacity:0;transform:translateY(22px);transition:opacity .7s ease,transform .7s ease;}
+  .reveal.in{opacity:1;transform:none;}
+  .reveal.d1{transition-delay:.08s}.reveal.d2{transition-delay:.16s}
+  .reveal.d3{transition-delay:.24s}.reveal.d4{transition-delay:.32s}
+
+  /* ============ COVER ============ */
+  .cover{
+    background:linear-gradient(135deg,#2a1259 0%,#4a2694 42%,#0a8f89 100%);
+    color:#fff;display:flex;flex-direction:column;justify-content:space-between;
+    min-height:297mm;
+  }
+  .cover-art{position:absolute;inset:0;width:100%;height:100%;opacity:.9;}
+  .blob{transform-origin:center;animation:float 9s ease-in-out infinite;}
+  .blob.b2{animation-delay:-3s;animation-duration:11s;}
+  .blob.b3{animation-delay:-6s;animation-duration:13s;}
+  @keyframes float{
+    0%,100%{transform:translate(0,0) scale(1);}
+    50%{transform:translate(14px,-22px) scale(1.05);}
+  }
+  .spin-slow{animation:spin 26s linear infinite;transform-origin:center;}
+  @keyframes spin{to{transform:rotate(360deg);}}
+
+  .cover-top{position:relative;z-index:2;padding:18mm 17mm 0;}
+  .cover-brand{display:flex;align-items:center;gap:12px;}
+  .logo-mark{
+    width:46px;height:46px;border-radius:13px;display:grid;place-items:center;
+    font-weight:800;font-size:15pt;background:rgba(255,255,255,.16);
+    border:1.5px solid rgba(255,255,255,.55);backdrop-filter:blur(6px);
+  }
+  .logo-mark img{width:100%;height:100%;object-fit:contain;display:block;border-radius:13px;}
+  .logo-mark.has-img{padding:0;overflow:hidden;background:#fff;border-color:rgba(255,255,255,.85);}
+  .logo-hero{
+    position:relative;z-index:2;display:block;height:74px;width:auto;max-width:180px;
+    margin:0 auto 18px;object-fit:contain;
+    filter:drop-shadow(0 8px 22px rgba(0,0,0,.28));
+  }
+  .brand-text{font-size:9.5pt;letter-spacing:.22em;text-transform:uppercase;opacity:.92;}
+
+  .cover-main{
+    position:relative;z-index:2;flex:1;display:flex;flex-direction:column;
+    justify-content:center;padding:0 17mm;text-align:center;
+  }
+  .pill{
+    display:inline-block;align-self:center;padding:7px 20px;border-radius:999px;
+    background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.45);
+    font-size:9.5pt;letter-spacing:.24em;text-transform:uppercase;margin-bottom:22px;
+    backdrop-filter:blur(6px);
+  }
+  .cover-title{
+    font-size:46pt;font-weight:800;line-height:.98;margin:0 0 14px;letter-spacing:-.015em;
+  }
+  .cover-title .grad{
+    background:linear-gradient(90deg,#fff,#bffcf5);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .cover-sub{font-size:12.5pt;opacity:.95;max-width:150mm;margin:0 auto;}
+  .cover-lede{font-size:10pt;opacity:.82;max-width:135mm;margin:14px auto 0;}
+  .cover-meta{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:26px;}
+  .chip{
+    padding:8px 16px;border-radius:10px;background:rgba(255,255,255,.13);
+    border:1px solid rgba(255,255,255,.3);font-size:9pt;letter-spacing:.04em;
+    backdrop-filter:blur(6px);
+  }
+
+  .cover-stats{
+    position:relative;z-index:2;display:grid;grid-template-columns:repeat(3,1fr);
+    gap:10px;margin:26px 17mm 0;
+  }
+  .cover-stat{
+    text-align:center;padding:12px 8px;border-radius:12px;
+    background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.24);
+    backdrop-filter:blur(6px);
+  }
+  .cover-stat b{display:block;font-size:18pt;line-height:1;font-weight:800;}
+  .cover-stat span{display:block;font-size:8pt;letter-spacing:.12em;text-transform:uppercase;opacity:.85;margin-top:5px;}
+
+  .cover-bottom{
+    position:relative;z-index:2;margin:10mm 17mm 16mm;padding-top:9mm;
+    border-top:1px solid rgba(255,255,255,.25);
+    display:flex;justify-content:space-between;align-items:flex-end;gap:20px;
+  }
+  .cover-bottom .org{font-size:9.5pt;letter-spacing:.06em;line-height:1.6;opacity:.95;}
+  .cover-bottom .year{font-size:22pt;font-weight:800;opacity:.9;}
+
+  /* ============ TYPO ============ */
+  .bab-label{font-size:9pt;letter-spacing:.28em;text-transform:uppercase;color:var(--teal-dark);font-weight:700;margin-bottom:2px;}
+  h1.bab{font-size:19pt;margin:0 0 4px;color:var(--purple-dark);letter-spacing:-.01em;}
+  h2{
+    font-size:12pt;color:var(--purple-dark);margin:18px 0 8px;padding-left:12px;
+    border-left:4px solid var(--teal);
+  }
+  h3{font-size:10.5pt;margin:12px 0 6px;color:var(--teal-dark);}
+  .section-rule{height:4px;width:70px;border-radius:4px;background:linear-gradient(90deg,var(--teal),var(--purple));margin:8px 0 16px;}
+  p{margin:0 0 10px;text-align:justify;}
+  .muted{color:var(--ink-soft);}
+  .center{text-align:center;}
+
+  /* ============ TOC ============ */
+  .toc{list-style:none;padding:0;margin:6px 0 0;}
+  .toc li{
+    display:flex;align-items:baseline;gap:10px;padding:8px 0;
+    border-bottom:1px dashed var(--line);transition:.2s;cursor:pointer;
+  }
+  .toc li:hover{padding-left:6px;background:linear-gradient(90deg,rgba(15,185,177,.06),transparent);}
+  .toc .n{
+    width:26px;height:26px;flex:none;border-radius:8px;display:grid;place-items:center;
+    background:linear-gradient(135deg,var(--teal),var(--purple));color:#fff;font-size:9pt;font-weight:700;
+  }
+  .toc .t{font-weight:600;}
+  .toc .d{margin-left:auto;font-size:9pt;color:var(--ink-soft);}
+
+  /* ============ CARDS ============ */
+  .grid{display:grid;gap:12px;}
+  .grid-2{grid-template-columns:1fr 1fr;}
+  .grid-3{grid-template-columns:repeat(3,1fr);}
+  .grid-4{grid-template-columns:repeat(4,1fr);}
+  .card{
+    border:1px solid var(--line);border-radius:14px;padding:14px;background:#fff;
+    transition:transform .25s,box-shadow .25s,border-color .25s;
+  }
+  .card:hover{transform:translateY(-3px);box-shadow:0 10px 24px rgba(61,31,122,.12);border-color:rgba(108,63,197,.3);}
+  .card.accent{background:linear-gradient(135deg,rgba(15,185,177,.09),rgba(108,63,197,.09));border-color:rgba(108,63,197,.22);}
+  .card h4{margin:0 0 6px;font-size:10pt;color:var(--purple-dark);}
+  .card p{margin:0;font-size:9.5pt;text-align:left;}
+
+  .icon-badge{
+    width:42px;height:42px;border-radius:12px;display:grid;place-items:center;
+    background:linear-gradient(135deg,var(--teal),var(--purple));color:#fff;
+    margin-bottom:10px;box-shadow:0 6px 14px rgba(108,63,197,.24);
+  }
+  .icon-badge svg{width:22px;height:22px;}
+
+  .stat{
+    text-align:center;border-radius:14px;padding:16px 10px;
+    background:linear-gradient(135deg,rgba(15,185,177,.12),rgba(108,63,197,.12));
+    border:1px solid rgba(108,63,197,.18);
+    transition:transform .25s,box-shadow .25s;
+  }
+  .stat:hover{transform:translateY(-4px);box-shadow:0 12px 26px rgba(61,31,122,.16);}
+  .stat .b{display:block;font-size:18pt;font-weight:800;color:var(--purple-dark);line-height:1.1;}
+  .stat .s{display:block;font-size:8.5pt;color:var(--ink-soft);letter-spacing:.06em;text-transform:uppercase;margin-top:4px;}
+
+  .kv{display:flex;gap:10px;padding:7px 0;border-bottom:1px solid var(--line);font-size:9.8pt;}
+  .kv:last-child{border-bottom:0;}
+  .kv .k{width:34%;font-weight:600;color:var(--purple-dark);flex:none;}
+  .kv .v{flex:1;}
+
+  ul.clean{list-style:none;padding:0;margin:6px 0;}
+  ul.clean li{padding:5px 0 5px 22px;position:relative;font-size:9.8pt;}
+  ul.clean li::before{
+    content:"";position:absolute;left:0;top:11px;width:9px;height:9px;border-radius:3px;
+    background:linear-gradient(135deg,var(--teal),var(--purple));
+  }
+
+  /* ============ FLIP CARDS ============ */
+  .flip-card{perspective:1100px;height:132px;cursor:pointer;}
+  .flip-inner{
+    position:relative;width:100%;height:100%;transition:transform .65s cubic-bezier(.4,.2,.2,1);
+    transform-style:preserve-3d;
+  }
+  .flip-card:hover .flip-inner,.flip-card.flipped .flip-inner{transform:rotateY(180deg);}
+  .flip-face{
+    position:absolute;inset:0;backface-visibility:hidden;border-radius:14px;
+    padding:14px;display:flex;flex-direction:column;justify-content:center;
+    border:1px solid var(--line);
+  }
+  .flip-front{background:linear-gradient(135deg,#fff,#f6f4ff);}
+  .flip-front .t{font-weight:700;color:var(--purple-dark);font-size:10.5pt;margin-top:8px;}
+  .flip-front .hint{font-size:8pt;color:var(--ink-soft);margin-top:3px;letter-spacing:.06em;}
+  .flip-back{
+    transform:rotateY(180deg);color:#fff;
+    background:linear-gradient(135deg,var(--purple-dark),var(--purple));
+    font-size:9pt;line-height:1.45;
+  }
+  .flip-back b{font-size:10pt;display:block;margin-bottom:4px;}
+
+  /* ============ TABLES ============ */
+  table{width:100%;border-collapse:collapse;margin:8px 0 12px;font-size:9.3pt;}
+  th{background:linear-gradient(135deg,var(--purple-dark),var(--purple));color:#fff;text-align:left;padding:8px 10px;font-weight:600;}
+  td{padding:6px 10px;border-bottom:1px solid var(--line);vertical-align:top;transition:background .2s;}
+  tr:nth-child(even) td{background:#fafbfe;}
+  tr.dim td{opacity:.28;}
+  tr.hit td{background:rgba(15,185,177,.14)!important;}
+  .num{text-align:right;white-space:nowrap;}
+  tfoot td{font-weight:700;background:#eef1f8;color:var(--purple-dark);border-top:2px solid var(--purple);}
+  .table-title{font-size:9.5pt;font-weight:700;color:var(--purple-dark);margin:12px 0 0;letter-spacing:.03em;}
+
+  /* ============ FILTER CHIPS ============ */
+  .chips{display:flex;gap:7px;flex-wrap:wrap;margin:10px 0 6px;}
+  .chip-btn{
+    border:1px solid var(--line);background:#fff;border-radius:999px;padding:5px 12px;
+    font-size:8.5pt;font-weight:600;color:var(--ink-soft);cursor:pointer;transition:.2s;
+  }
+  .chip-btn:hover{border-color:var(--teal);color:var(--teal-dark);}
+  .chip-btn.active{background:linear-gradient(135deg,var(--teal),var(--purple));color:#fff;border-color:transparent;}
+
+  /* ============ DONUT ============ */
+  .donut-wrap{display:flex;align-items:center;gap:18px;}
+  .donut{width:190px;height:190px;flex:none;}
+  .donut-seg{
+    fill:none;stroke-width:26;stroke-linecap:butt;
+    transition:stroke-width .2s,opacity .2s,stroke-dasharray 1s ease;
+    cursor:pointer;
+  }
+  .donut-seg:hover{stroke-width:32;}
+  .donut-seg.faded{opacity:.18;}
+  .donut-center{font-size:11px;font-weight:700;fill:var(--purple-dark);}
+  .donut-center2{font-size:7px;fill:var(--ink-soft);letter-spacing:.1em;}
+  .legend{flex:1;display:flex;flex-direction:column;gap:3px;}
+  .legend button{
+    display:flex;align-items:center;gap:8px;background:none;border:0;padding:4px 6px;
+    border-radius:7px;cursor:pointer;font-size:8.7pt;color:var(--ink);text-align:left;
+    transition:.18s;font-family:inherit;
+  }
+  .legend button:hover,.legend button.active{background:rgba(108,63,197,.08);}
+  .legend .dot{width:9px;height:9px;border-radius:3px;flex:none;}
+  .legend .val{margin-left:auto;color:var(--ink-soft);font-variant-numeric:tabular-nums;}
+
+  /* ============ BAR CHART ============ */
+  .bars{display:flex;flex-direction:column;gap:7px;margin:10px 0 14px;}
+  .bar-row{display:grid;grid-template-columns:88px 1fr 74px;align-items:center;gap:9px;font-size:8.8pt;}
+  .bar-track{height:14px;border-radius:8px;background:#eef1f8;overflow:hidden;}
+  .bar-fill{
+    height:100%;width:0;border-radius:8px;
+    background:linear-gradient(90deg,var(--teal),var(--purple));
+    transition:width 1.1s cubic-bezier(.2,.7,.2,1);
+  }
+  .bar-row:nth-child(2) .bar-fill{background:linear-gradient(90deg,#12b8a6,#3f8bd8);}
+  .bar-row:nth-child(3) .bar-fill{background:linear-gradient(90deg,#4a7bd8,#6c3fc5);}
+  .bar-row:nth-child(4) .bar-fill{background:linear-gradient(90deg,#7a5bd6,#a45cd6);}
+  .bar-row:nth-child(5) .bar-fill{background:linear-gradient(90deg,#b05cd6,#d65ca8);}
+  .bar-row:nth-child(6) .bar-fill{background:linear-gradient(90deg,#d65c8a,#ff7a59);}
+  .bar-row:nth-child(7) .bar-fill{background:linear-gradient(90deg,#ff8a3d,#f5a623);}
+  .bar-row:nth-child(8) .bar-fill{background:linear-gradient(90deg,#f5a623,#ffd166);}
+
+  /* ============ TIERS ============ */
+  .tiers{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:12px;}
+  .tier{
+    border-radius:15px;overflow:hidden;border:2px solid var(--line);display:flex;
+    flex-direction:column;cursor:pointer;transition:transform .25s,box-shadow .25s,border-color .25s;
+    background:#fff;position:relative;
+  }
+  .tier:hover{transform:translateY(-5px);box-shadow:0 16px 32px rgba(61,31,122,.16);}
+  .tier.selected{border-color:var(--teal);box-shadow:0 0 0 4px rgba(15,185,177,.18),0 16px 32px rgba(61,31,122,.18);}
+  .tier.selected::after{
+    content:"DIPILIH";position:absolute;top:10px;right:-30px;transform:rotate(45deg);
+    background:var(--teal);color:#fff;font-size:7pt;font-weight:800;letter-spacing:.14em;
+    padding:4px 34px;
+  }
+  .tier .head{padding:12px 10px;color:#fff;text-align:center;}
+  .tier.title .head{background:linear-gradient(135deg,#1d0f3f,#4a2694);}
+  .tier.platinum .head{background:linear-gradient(135deg,#3d1f7a,#6c3fc5);}
+  .tier.gold .head{background:linear-gradient(135deg,#b8860b,#f5a623);}
+  .tier.silver .head{background:linear-gradient(135deg,#5b6b84,#9aa7bd);}
+  .tier .rank{font-size:8.5pt;letter-spacing:.24em;text-transform:uppercase;opacity:.92;}
+  .tier .price{font-size:15pt;font-weight:800;margin-top:4px;line-height:1.1;}
+  .tier .body{padding:13px;flex:1;}
+  .tier .body ul{list-style:none;padding:0;margin:0;}
+  .tier .body li{font-size:8.8pt;padding:4px 0 4px 17px;position:relative;line-height:1.38;}
+  .tier .body li::before{
+    content:"";position:absolute;left:0;top:8px;width:8px;height:8px;border-radius:50%;
+    background:linear-gradient(135deg,var(--teal),var(--purple));
+  }
+  .tier .body li.no{opacity:.4;text-decoration:line-through;}
+  .tier .body li.no::before{background:#c9cfdb;}
+
+  .tier-summary{
+    margin-top:14px;border-radius:12px;padding:12px 16px;display:flex;
+    align-items:center;justify-content:space-between;gap:12px;
+    background:linear-gradient(135deg,rgba(15,185,177,.12),rgba(108,63,197,.12));
+    border:1px dashed rgba(108,63,197,.35);font-size:9.5pt;
+  }
+  .tier-summary b{color:var(--purple-dark);}
+
+  .compare-toggle{
+    display:inline-flex;align-items:center;gap:8px;margin-top:12px;
+    background:var(--purple-dark);color:#fff;border:0;border-radius:10px;
+    padding:9px 16px;font-size:9pt;font-weight:600;cursor:pointer;font-family:inherit;
+    transition:.2s;
+  }
+  .compare-toggle:hover{background:var(--purple);}
+  .compare-table{display:none;margin-top:10px;}
+  .compare-table.open{display:block;animation:fadeIn .35s ease;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
+
+  /* ============ ACCORDION / ORG ============ */
+  .org-item{border:1px solid var(--line);border-radius:11px;margin-bottom:6px;overflow:hidden;}
+  .org-head{
+    display:flex;align-items:center;gap:9px;padding:9px 12px;cursor:pointer;
+    font-size:9.5pt;font-weight:600;background:#fafbfe;transition:.2s;user-select:none;
+  }
+  .org-head:hover{background:rgba(108,63,197,.07);}
+  .org-head .role{flex:1;}
+  .org-head .plus{color:var(--purple);font-weight:800;transition:transform .3s;}
+  .org-item.open .org-head{background:linear-gradient(90deg,rgba(15,185,177,.12),rgba(108,63,197,.12));}
+  .org-item.open .plus{transform:rotate(45deg);}
+  .org-body{max-height:0;overflow:hidden;transition:max-height .4s ease;padding:0 12px;}
+  .org-item.open .org-body{max-height:220px;padding:8px 12px 12px;}
+  .org-body ul{list-style:none;padding:0;margin:0;font-size:9pt;color:var(--ink-soft);}
+  .org-body li{padding:3px 0 3px 16px;position:relative;}
+  .org-body li::before{content:"";position:absolute;left:0;top:10px;width:6px;height:6px;border-radius:50%;background:var(--teal);}
+
+  /* ============ GALLERY ============ */
+  .gallery{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px;}
+  .gallery-item{
+    position:relative;border-radius:14px;overflow:hidden;cursor:zoom-in;
+    border:1px solid var(--line);transition:transform .25s,box-shadow .25s;
+    background:#fff;
+  }
+  .gallery-item:hover{transform:translateY(-4px);box-shadow:0 14px 30px rgba(61,31,122,.18);}
+  .gallery-item svg{display:block;width:100%;height:auto;}
+  .gallery-item img{display:block;width:100%;height:auto;aspect-ratio:5/3;object-fit:cover;}
+  .gallery-cap{
+    position:absolute;left:0;right:0;bottom:0;padding:22px 12px 10px;
+    background:linear-gradient(transparent,rgba(22,33,58,.82));
+    color:#fff;font-size:9pt;font-weight:600;
+  }
+  .gallery-cap small{display:block;font-weight:400;opacity:.85;font-size:8pt;}
+
+  /* ============ LIGHTBOX ============ */
+  .lightbox{
+    position:fixed;inset:0;background:rgba(16,10,34,.82);backdrop-filter:blur(6px);
+    display:none;align-items:center;justify-content:center;z-index:1000;padding:30px;
+  }
+  .lightbox.open{display:flex;animation:fadeIn .25s ease;}
+  .lightbox-box{max-width:760px;width:100%;background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 30px 70px rgba(0,0,0,.5);}
+  .lightbox-box svg{display:block;width:100%;height:auto;}
+  .lightbox-cap{padding:14px 18px;font-size:10pt;font-weight:600;color:var(--purple-dark);display:flex;justify-content:space-between;align-items:center;}
+  .lightbox-close{background:var(--purple-dark);color:#fff;border:0;border-radius:8px;padding:6px 12px;cursor:pointer;font-family:inherit;font-size:9pt;}
+
+  /* ============ TIMELINE ============ */
+  .timeline{position:relative;margin:14px 0 4px;padding-left:26px;}
+  .timeline::before{content:"";position:absolute;left:8px;top:6px;bottom:6px;width:3px;border-radius:3px;background:linear-gradient(180deg,var(--teal),var(--purple));}
+  .tl-item{position:relative;padding:0 0 14px 4px;}
+  .tl-item::before{
+    content:"";position:absolute;left:-24px;top:5px;width:13px;height:13px;border-radius:50%;
+    background:#fff;border:3px solid var(--teal);transition:.2s;
+  }
+  .tl-item:hover::before{background:var(--teal);transform:scale(1.15);}
+  .tl-item .date{font-size:8.5pt;font-weight:700;color:var(--teal-dark);letter-spacing:.06em;}
+  .tl-item .desc{font-size:9.3pt;}
+
+  /* ============ TOOLTIP ============ */
+  [data-tip]{position:relative;}
+  [data-tip]::after{
+    content:attr(data-tip);position:absolute;bottom:calc(100% + 7px);left:50%;
+    transform:translateX(-50%) translateY(4px);background:var(--ink);color:#fff;
+    font-size:8pt;padding:5px 9px;border-radius:6px;white-space:nowrap;
+    opacity:0;pointer-events:none;transition:.18s;z-index:20;font-weight:400;
+  }
+  [data-tip]:hover::after{opacity:1;transform:translateX(-50%) translateY(0);}
+
+  /* ============ MISC ============ */
+  .note{
+    border-left:4px solid var(--teal);background:rgba(15,185,177,.07);
+    padding:11px 14px;border-radius:0 10px 10px 0;font-size:9.3pt;margin:11px 0;
+  }
+  .divider{height:1px;background:var(--line);margin:16px 0;}
+  .sign-grid{display:grid;grid-template-columns:1fr 1fr;gap:26px;margin-top:24px;}
+  .sign{text-align:center;font-size:9.5pt;}
+  .sign .role{color:var(--ink-soft);margin-bottom:54px;}
+  .sign .name{font-weight:700;border-top:1px solid var(--ink-soft);padding-top:6px;}
+  .sign-img{display:block;height:56px;width:auto;max-width:150px;object-fit:contain;margin:-14px auto -34px;position:relative;z-index:1;}
+  .sign .name{font-weight:700;border-top:1px solid var(--ink-soft);padding-top:6px;}
+  .sign .id{font-size:8.5pt;color:var(--ink-soft);}
+  .contact-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px;}
+  .copy-btn{
+    margin-top:8px;background:rgba(108,63,197,.1);color:var(--purple-dark);border:0;
+    border-radius:7px;padding:5px 10px;font-size:8pt;font-weight:600;cursor:pointer;
+    font-family:inherit;transition:.2s;
+  }
+  .copy-btn:hover{background:var(--purple);color:#fff;}
+  .wa-link{color:var(--teal-dark);font-weight:600;text-decoration:none;border-bottom:1px dotted var(--teal-dark);}
+  .wa-link:hover{color:var(--purple);border-bottom-color:var(--purple);}
+  .qr-img{
+    width:86px;height:86px;flex:none;object-fit:contain;border-radius:10px;
+    border:1px solid var(--line);background:#fff;padding:4px;display:block;
+  }
+
+  .page-illustration{width:100%;height:auto;display:block;border-radius:14px;margin:6px 0 10px;}
+
+  /* ============ FLIPBOOK ============ */
+  .flipbook{position:relative;padding:24px 60px 40px;display:flex;flex-direction:column;align-items:center;}
+  .flipbook-toolbar{
+    position:sticky;top:0;z-index:950;display:flex;align-items:center;gap:10px;
+    flex-wrap:wrap;justify-content:center;padding:10px 14px;margin-bottom:16px;
+    background:rgba(255,255,255,.9);backdrop-filter:blur(8px);
+    border:1px solid var(--line);border-radius:14px;box-shadow:0 6px 20px rgba(22,33,58,.08);
+  }
+  .flipbook-toolbar .brand{display:flex;align-items:center;gap:8px;margin-right:auto;font-weight:700;color:var(--purple-dark);}
+  .flipbook-toolbar .brand .dot{width:10px;height:10px;border-radius:3px;background:linear-gradient(135deg,var(--teal),var(--purple));}
+  .fb-btn{
+    border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:9px;
+    padding:7px 13px;font-size:9pt;font-weight:600;cursor:pointer;font-family:inherit;
+    transition:.18s;display:inline-flex;align-items:center;gap:6px;
+  }
+  .fb-btn:hover{background:rgba(108,63,197,.08);border-color:rgba(108,63,197,.3);}
+  .fb-btn:disabled{opacity:.4;cursor:not-allowed;}
+  .fb-btn.primary{background:linear-gradient(135deg,var(--purple-dark),var(--purple));color:#fff;border:0;}
+  .fb-btn.primary:hover{filter:brightness(1.1);}
+  .fb-indicator{font-size:9pt;color:var(--ink-soft);font-weight:600;min-width:110px;text-align:center;}
+
+  .flipbook-stage{
+    position:relative;width:100%;max-width:920px;
+    display:flex;align-items:stretch;justify-content:center;gap:0;
+    perspective:4200px;perspective-origin:50% 50%;
+  }
+  .flipbook-stage::before{
+    content:"";position:absolute;inset:0;transform:translateZ(-1px);
+    background:radial-gradient(ellipse at center,rgba(22,33,58,.22),transparent 70%);
+    filter:blur(6px);
+  }
+  .fb-page{
+    width:50%;max-width:430px;aspect-ratio:210/297;
+    background:#fff;position:relative;overflow:hidden;
+    box-shadow:0 18px 50px rgba(22,33,58,.28),0 4px 12px rgba(22,33,58,.18);
+    transition:none;
+  }
+  .fb-page{cursor:default;}
+  #fbStage button,#fbStage a,#fbStage .flip-card,#fbStage .tier,#fbStage .gallery-item,#fbStage .org-head,#fbStage .toc li{cursor:pointer;}
+  .fb-page.left{border-radius:16px 0 0 16px;transform-origin:right center;}
+  .fb-page.right{border-radius:0 16px 16px 0;transform-origin:left center;}
+  .fb-page.single{border-radius:16px;}
+  #fbStage .page{width:210mm!important;min-height:297mm!important;}
+  #fbStage .cover{min-height:297mm!important;}
+  #fbStage .tiers{grid-template-columns:repeat(4,1fr)!important;}
+  #fbStage .gallery{grid-template-columns:1fr 1fr!important;}
+  #fbStage .donut-wrap{flex-direction:row!important;}
+  #fbStage .grid-3{grid-template-columns:repeat(3,1fr)!important;}
+  #fbStage .grid-4{grid-template-columns:repeat(4,1fr)!important;}
+  #fbStage .page-scale{
+    width:210mm;height:297mm;transform-origin:top left;position:absolute;top:0;left:0;
+  }
+  .fb-fold{
+    position:absolute;top:0;bottom:0;width:44px;pointer-events:none;z-index:5;
+  }
+  .fb-fold.left{left:0;background:linear-gradient(90deg,rgba(22,33,58,.14),transparent);}
+  .fb-fold.right{right:0;background:linear-gradient(-90deg,rgba(22,33,58,.14),transparent);}
+
+  .flipbook-hint{font-size:8.5pt;color:var(--ink-soft);margin-top:16px;text-align:center;}
+  .flipbook-hint b{color:var(--purple-dark);}
+
+  @media (max-width:840px){
+    .flipbook{padding:18px 8px 30px;}
+    .flipbook-stage{max-width:100%;}
+    .fb-page{min-height:0;}
+  }
+
+  /* ============ RESPONSIVE SCREEN ============ */
+  @media (max-width:840px){
+    .page{width:100%;min-height:auto;margin:10px 0;border-radius:0;}
+    .cover{min-height:100vh;}
+    .side-nav{display:none;}
+    .tiers{grid-template-columns:1fr;}
+    .gallery{grid-template-columns:1fr;}
+    .donut-wrap{flex-direction:column;}
+    .grid-3,.grid-4{grid-template-columns:1fr 1fr;}
+  }
+
+  /* ============ PRINT ============ */
+  @page{size:A4 portrait;margin:0;}
+
+  @media print{
+    html,body{
+      width:210mm;height:auto;margin:0;padding:0;background:#fff;
+      -webkit-print-color-adjust:exact;print-color-adjust:exact;
+    }
+    /* Setiap section jadi satu halaman A4 presisi */
+    .page{
+      width:210mm!important;
+      height:297mm!important;
+      min-height:297mm!important;
+      max-height:297mm!important;
+      margin:0!important;
+      box-shadow:none!important;
+      border-radius:0!important;
+      overflow:hidden!important;
+      page-break-after:always;
+      break-after:page;
+      page-break-inside:avoid;
+      break-inside:avoid;
+      position:relative;
+    }
+    .page:last-of-type{page-break-after:auto;break-after:auto;}
+    .cover{min-height:297mm!important;height:297mm!important;}
+
+    /* Sembunyikan elemen interaktif */
+    .progress,.side-nav,.lightbox,.chips,.compare-toggle,.copy-btn,.no-print{display:none!important;}
+
+    /* Semua animasi/reveal tampil penuh */
+    .reveal{opacity:1!important;transform:none!important;transition:none!important;}
+    *{animation:none!important;transition:none!important;}
+
+    /* Kartu/komponen tidak boleh terpotong antar halaman */
+    .card,.stat,.tier,.gallery-item,.org-item,.tl-item,.note,.sign,
+    table,.donut-wrap,tr,td,th,.flip-card{
+      page-break-inside:avoid;break-inside:avoid;
+    }
+    table{width:100%;}
+    thead{display:table-header-group;}
+    tr{page-break-inside:avoid;break-inside:avoid;}
+
+    /* Flip card: tampilkan sisi depan saja */
+    .flip-card{height:auto;}
+    .flip-inner{transform:none!important;height:auto;}
+    .flip-face{position:relative;backface-visibility:visible;transform:none!important;height:auto;}
+    .flip-back{display:none;}
+    .flip-card:hover .flip-inner{transform:none!important;}
+
+    .compare-table{display:none!important;}
+    .org-body{max-height:none!important;padding:8px 12px 12px!important;}
+    .org-body ul{display:none;}
+    .tier:hover{transform:none;}
+    .card:hover,.stat:hover,.gallery-item:hover{transform:none;box-shadow:none;}
+    .donut-seg{transition:none;}
+    .bar-fill{transition:none;}
+    .cover-art{opacity:.9;}
+  }
+
+/* RESPONSIVE FLIPBOOK: tetap buku pada seluruh ukuran layar */
+html,body{max-width:100%;overflow-x:hidden}
+.flipbook-toolbar{width:min(100%,1000px);margin-left:auto;margin-right:auto}
+.flipbook{width:100%;max-width:1100px;margin:0 auto;padding:18px 12px 34px}
+.flipbook-stage{width:min(100%,920px);max-width:920px;margin:0 auto;aspect-ratio:420/297;min-height:0}
+.fb-page{width:50%;max-width:none;height:100%;aspect-ratio:auto;flex:none}
+#fbZoom{display:none}
+@media(max-width:700px){
+ .flipbook{padding:8px 8px 22px}
+ .flipbook-toolbar{position:sticky;top:4px;gap:6px;padding:9px 7px;justify-content:center;border-radius:10px}
+ .flipbook-toolbar .brand{width:100%;justify-content:center;margin:0;font-size:12px}
+ .fb-btn{padding:9px 10px;font-size:12px;min-height:38px}
+ .fb-indicator{min-width:68px;font-size:12px}
+ .flipbook-stage{width:min(100%,560px);max-width:560px;aspect-ratio:210/297;display:block;overflow:hidden;border-radius:10px;touch-action:pan-y}
+ .fb-page.left{width:100%;height:100%;max-width:none;border-radius:10px}
+ .fb-page.right{display:none!important}
+ .fb-fold.left{left:auto;right:0;background:linear-gradient(-90deg,rgba(22,33,58,.10),transparent)}
+ #fbZoom{display:inline-flex}
+ .flipbook-hint{max-width:350px;line-height:1.5}
+ .flipbook.zoom-active{overflow-x:auto;align-items:flex-start;-webkit-overflow-scrolling:touch}
+ .flipbook.zoom-active .flipbook-stage{width:700px;min-width:700px;max-width:none;margin:0;flex-shrink:0}
+}
+@media(min-width:701px) and (max-width:1050px){.flipbook{padding:12px 8px 28px}.flipbook-stage{width:100%}}
+@media print{#fbZoom{display:none!important}}
+
+  /* Tanda tangan: area konsisten tanpa margin negatif / tumpang tindih */
+  .sign-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:22px 32px;margin-top:22px;align-items:start;}
+  .sign{min-width:0;text-align:center;font-size:9.5pt;display:flex;flex-direction:column;align-items:center;}
+  .sign .role{color:var(--ink-soft);font-weight:600;margin:0 0 7px;min-height:20px;line-height:1.4;}
+  .sign-img{display:block;width:160px;max-width:90%;height:76px;object-fit:contain;object-position:center center;margin:0 auto;position:static;z-index:auto;mix-blend-mode:multiply;}
+  .sign .name{width:100%;max-width:240px;font-weight:700;border-top:1px solid var(--ink-soft);padding-top:6px;margin-top:0;line-height:1.35;}
+  .sign .id{font-size:8.5pt;color:var(--ink-soft);margin-top:3px;line-height:1.35;}
+  #p14 .sign-grid{margin-top:19px;gap:19px 30px;}
+  #p14 .sign-img{height:72px;}
+  #p14 .sign .role{margin-bottom:5px;}
+  #p2 .sign-grid{margin-top:26px!important;}
+</style>
+</head>
+<body>
+
+<div class="progress" id="progress"></div>
+
+<nav class="side-nav" aria-label="Navigasi halaman">
+  <a href="#p1" data-target="p1"><span>Sampul</span></a>
+  <a href="#p2" data-target="p2"><span>Kata Pengantar</span></a>
+  <a href="#p3" data-target="p3"><span>Daftar Isi</span></a>
+  <a href="#p4" data-target="p4"><span>Pendahuluan</span></a>
+  <a href="#p5" data-target="p5"><span>Profil Kegiatan</span></a>
+  <a href="#p6" data-target="p6"><span>Galeri</span></a>
+  <a href="#p7" data-target="p7"><span>Rundown</span></a>
+  <a href="#p9" data-target="p9"><span>Sasaran &amp; Anggaran</span></a>
+  <a href="#p10" data-target="p10"><span>Peluang Sponsor</span></a>
+  <a href="#p11" data-target="p11"><span>Paket Sponsor</span></a>
+  <a href="#p12" data-target="p12"><span>RAB</span></a>
+  <a href="#p13" data-target="p13"><span>Kepanitiaan</span></a>
+  <a href="#p14" data-target="p14"><span>Penutup</span></a>
+  <a href="#p15" data-target="p15"><span>Kontak</span></a>
+</nav>
+
+<div class="flipbook-toolbar no-print" id="fbToolbar">
+  <div class="brand"><span class="dot"></span>Exporia HIMATIF 2027</div>
+  <button class="fb-btn" id="fbPrev" aria-label="Halaman sebelumnya">&larr; Sebelumnya</button>
+  <span class="fb-indicator" id="fbIndicator">1 / 15</span>
+  <button class="fb-btn" id="fbNext" aria-label="Halaman berikutnya">Berikutnya &rarr;</button>
+  <button class="fb-btn" id="fbZoom" aria-pressed="false">🔍 Perbesar</button>
+   <button class="fb-btn primary" id="fbRoll">Animasi Geser</button>
+</div>
+
+<div class="flipbook" id="flipbook">
+  <div class="flipbook-stage" id="fbStage">
+    <div class="fb-page left" id="fbLeft">
+      <div class="page-scale" id="fbLeftInner"></div>
+      <div class="fb-fold left"></div>
+    </div>
+    <div class="fb-page right" id="fbRight">
+      <div class="page-scale" id="fbRightInner"></div>
+      <div class="fb-fold right"></div>
+    </div>
+  </div>
+  <p class="flipbook-hint no-print">Gunakan tombol <b>&larr; &rarr;</b>, klik sisi halaman, atau geser <b>swipe</b> untuk membalik.</p>
+</div>
+
+<div id="bookSource" style="display:none;">
+
+<!-- ================= 01 COVER ================= -->
+<section class="page cover" id="p1">
+  <svg class="cover-art" viewBox="0 0 800 1120" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <defs>
+      <radialGradient id="gA" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="#2ee6d6" stop-opacity=".55"/>
+        <stop offset="100%" stop-color="#2ee6d6" stop-opacity="0"/>
+      </radialGradient>
+      <radialGradient id="gB" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="#b07cff" stop-opacity=".55"/>
+        <stop offset="100%" stop-color="#b07cff" stop-opacity="0"/>
+      </radialGradient>
+      <linearGradient id="gLine" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stop-color="#ffffff" stop-opacity=".5"/>
+        <stop offset="100%" stop-color="#ffffff" stop-opacity=".05"/>
+      </linearGradient>
+    </defs>
+    <circle class="blob b1" cx="680" cy="180" r="260" fill="url(#gB)"/>
+    <circle class="blob b2" cx="120" cy="880" r="300" fill="url(#gA)"/>
+    <circle class="blob b3" cx="700" cy="980" r="190" fill="url(#gB)"/>
+    <g class="spin-slow" opacity=".28">
+      <circle cx="660" cy="300" r="120" fill="none" stroke="url(#gLine)" stroke-width="1.5" stroke-dasharray="6 10"/>
+      <circle cx="660" cy="300" r="160" fill="none" stroke="url(#gLine)" stroke-width="1"/>
+    </g>
+    <g opacity=".16" fill="#fff">
+      <circle cx="90" cy="200" r="2.5"/><circle cx="150" cy="140" r="1.8"/>
+      <circle cx="740" cy="520" r="2.2"/><circle cx="700" cy="600" r="1.6"/>
+      <circle cx="120" cy="700" r="2"/><circle cx="300" cy="980" r="2.4"/>
+      <circle cx="620" cy="860" r="1.8"/><circle cx="420" cy="120" r="1.6"/>
+    </g>
+    <g opacity=".1" stroke="#fff" stroke-width="1" fill="none">
+      <path d="M0 620 C180 560 260 700 430 640 S720 560 800 620"/>
+      <path d="M0 660 C180 600 260 740 430 680 S720 600 800 660"/>
+    </g>
+  </svg>
+
+  <div class="cover-top">
+    <div class="cover-brand">
+      <div class="logo-mark has-img"><img src="https://i.ibb.co.com/RTzkJqgJ/logo.png" alt="Logo Exporia"></div>
+      <div class="brand-text">Himatif &middot; Universitas Tangerang Raya</div>
+    </div>
+  </div>
+
+  <div class="cover-main">
+    <img class="logo-hero" src="https://i.ibb.co.com/RTzkJqgJ/logo.png" alt="Logo Exporia Himatif">
+    <span class="pill">Proposal Sponsorship</span>
+    <h1 class="cover-title">EXPORIA<br><span class="grad">HIMATIF 2027</span></h1>
+    <p class="cover-sub">Mengembangkan Potensi Generasi Muda melalui Inovasi, Kompetisi, dan Kebersamaan di Era Digital</p>
+    <p class="cover-lede">Seminar Nasional &middot; Lomba Cerdas Cermat &middot; Turnamen Futsal &middot; Malam Puncak</p>
+    <div class="cover-meta">
+      <span class="chip">23 &ndash; 24 Januari 2027</span>
+      <span class="chip">Kampus Universitas Tangerang Raya</span>
+      <span class="chip">King Futsal 2</span>
+    </div>
+  </div>
+
+  <div class="cover-stats">
+    <div class="cover-stat"><b class="counter" data-target="100" data-suffix="+">0</b><span>Peserta Seminar</span></div>
+    <div class="cover-stat"><b class="counter" data-target="150" data-suffix="+">0</b><span>Total Audiens</span></div>
+    <div class="cover-stat"><b class="counter" data-target="4" data-suffix="">0</b><span>Rangkaian Acara</span></div>
+  </div>
+
+  <div class="cover-bottom">
+    <div class="org">
+      <strong>Himpunan Mahasiswa Teknologi Informasi</strong><br>
+      Universitas Tangerang Raya<br>
+      Periode 2026 &ndash; 2027
+    </div>
+    <div class="year">2026</div>
+  </div>
+</section>
+
+<!-- ================= 02 KATA PENGANTAR ================= -->
+<section class="page" id="p2">
+  <div class="pad">
+    <div class="bab-label reveal">Kata Pengantar</div>
+    <h1 class="bab reveal d1">Sambutan Panitia</h1>
+    <div class="section-rule reveal d1"></div>
+
+    <svg class="page-illustration reveal d1" viewBox="0 0 700 120" aria-hidden="true">
+      <defs>
+        <linearGradient id="qg" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color="#0fb9b1"/><stop offset="100%" stop-color="#6c3fc5"/>
+        </linearGradient>
+      </defs>
+      <rect x="0" y="0" width="700" height="120" rx="14" fill="#f7f5ff"/>
+      <path d="M34 92 C34 60 54 38 88 30 L96 48 C74 55 62 70 62 88 Z" fill="url(#qg)" opacity=".9"/>
+      <path d="M78 92 C78 60 98 38 132 30 L140 48 C118 55 106 70 106 88 Z" fill="url(#qg)" opacity=".55"/>
+      <g fill="#fff" stroke="#e3e7f0">
+        <rect x="420" y="24" width="240" height="72" rx="12"/>
+      </g>
+      <g fill="#eef1f8">
+        <rect x="438" y="42" width="150" height="8" rx="4"/>
+        <rect x="438" y="58" width="190" height="8" rx="4"/>
+        <rect x="438" y="74" width="110" height="8" rx="4"/>
+      </g>
+      <circle cx="390" cy="60" r="16" fill="url(#qg)" opacity=".2"/>
+      <circle cx="390" cy="60" r="7" fill="url(#qg)"/>
+    </svg>
+
+    <p class="reveal d2"><em>Assalamualaikum Wr. Wb.</em></p>
+    <p class="reveal d2">Dengan memanjatkan puji syukur kehadirat Allah SWT, yang telah memberikan taufik dan hidayah-Nya kepada kita semua, sehingga kami Pengurus Himpunan Mahasiswa Teknologi Informasi dapat menyelesaikan proposal kegiatan &ldquo;EXPORIA HIMATIF 2027&rdquo; yang akan dilaksanakan pada hari Sabtu dan Minggu, tanggal 23&ndash;24 Januari 2027.</p>
+    <p class="reveal d2">Kegiatan Exporia meliputi Seminar Nasional, Lomba Cerdas Cermat (LCC), Lomba Futsal, dan Malam Puncak yang bertujuan untuk mengembangkan pengetahuan, kreativitas, kompetensi, serta mempererat kebersamaan mahasiswa.</p>
+    <p class="reveal d3">Kami mengucapkan terima kasih kepada Kemahasiswaan Universitas Tangerang Raya, Badan Eksekutif Mahasiswa, seluruh panitia pelaksana, serta pihak-pihak yang telah mendukung kegiatan ini.</p>
+    <p class="reveal d3">Kami menyadari proposal ini masih memiliki kekurangan. Kritik dan saran yang membangun sangat diharapkan. Akhir kata, kami berharap kegiatan ini memberikan manfaat bagi seluruh pihak yang terlibat. Atas perhatian dan kerja samanya kami ucapkan terima kasih.</p>
+    <p class="reveal d3"><em>Wassalamualaikum Wr. Wb.</em></p>
+
+    <div class="sign-grid" style="margin-top:38px;">
+      <div></div>
+      <div class="sign reveal d4">
+        <div>Tangerang, 18 September 2026</div>
+        <div class="role">Ketua Pelaksana</div>
+        <img class="sign-img" src="https://i.ibb.co.com/Mxb6Y17v/ttd-haris.jpg" alt="Tanda tangan Haris Munandar">
+        <div class="name">HARIS MUNANDAR</div>
+        <div class="id">NIM: 24131310052</div>
+      </div>
+    </div>
+  </div>
+  <div class="brandbar"></div>
+  <div class="pagenum">02</div>
+</section>
+
+<!-- ================= 03 DAFTAR ISI ================= -->
+<section class="page" id="p3">
+  <div class="pad">
+    <div class="bab-label reveal">Navigasi</div>
+    <h1 class="bab reveal d1">Daftar Isi</h1>
+    <div class="section-rule reveal d1"></div>
+
+    <ul class="toc">
+      <li class="reveal d1" onclick="document.getElementById('p4').scrollIntoView({behavior:'smooth'})"><span class="n">01</span><span class="t">Pendahuluan &amp; Latar Belakang</span><span class="d">Hal. 04</span></li>
+      <li class="reveal d1" onclick="document.getElementById('p5').scrollIntoView({behavior:'smooth'})"><span class="n">02</span><span class="t">Profil Kegiatan</span><span class="d">Hal. 05</span></li>
+      <li class="reveal d1" onclick="document.getElementById('p6').scrollIntoView({behavior:'smooth'})"><span class="n">03</span><span class="t">Galeri Rangkaian Acara</span><span class="d">Hal. 06</span></li>
+      <li class="reveal d2" onclick="document.getElementById('p7').scrollIntoView({behavior:'smooth'})"><span class="n">04</span><span class="t">Rundown Hari 1 &amp; Hari 2</span><span class="d">Hal. 07</span></li>
+      <li class="reveal d2" onclick="document.getElementById('p9').scrollIntoView({behavior:'smooth'})"><span class="n">05</span><span class="t">Sasaran, Peserta &amp; Anggaran</span><span class="d">Hal. 09</span></li>
+      <li class="reveal d2" onclick="document.getElementById('p10').scrollIntoView({behavior:'smooth'})"><span class="n">06</span><span class="t">Peluang &amp; Manfaat Sponsorship</span><span class="d">Hal. 10</span></li>
+      <li class="reveal d3" onclick="document.getElementById('p11').scrollIntoView({behavior:'smooth'})"><span class="n">07</span><span class="t">Paket Sponsorship Interaktif</span><span class="d">Hal. 11</span></li>
+      <li class="reveal d3" onclick="document.getElementById('p12').scrollIntoView({behavior:'smooth'})"><span class="n">08</span><span class="t">Rancangan Anggaran Biaya</span><span class="d">Hal. 12</span></li>
+      <li class="reveal d3" onclick="document.getElementById('p13').scrollIntoView({behavior:'smooth'})"><span class="n">09</span><span class="t">Susunan Kepanitiaan</span><span class="d">Hal. 13</span></li>
+      <li class="reveal d4" onclick="document.getElementById('p14').scrollIntoView({behavior:'smooth'})"><span class="n">10</span><span class="t">Penutup &amp; Lembar Persetujuan</span><span class="d">Hal. 14</span></li>
+      <li class="reveal d4" onclick="document.getElementById('p15').scrollIntoView({behavior:'smooth'})"><span class="n">11</span><span class="t">Kontak &amp; Narahubung</span><span class="d">Hal. 15</span></li>
+    </ul>
+
+    <div class="note reveal d4">
+      Dokumen interaktif: klik kartu, tab, legenda grafik, dan galeri untuk melihat detail. Saat dicetak, seluruh konten utama tetap tampil rapi pada ukuran A4.
+    </div>
+  </div>
+  <div class="brandbar"></div>
+  <div class="pagenum">03</div>
+</section>
+
+<!-- ================= 04 BAB I ================= -->
+<section class="page" id="p4">
+  <div class="pad">
+    <div class="bab-label reveal">Bab I</div>
+    <h1 class="bab reveal d1">Pendahuluan</h1>
+    <div class="section-rule reveal d1"></div>
+
+    <h2 class="reveal d1">A. Latar Belakang</h2>
+    <p class="reveal d2">Perkembangan teknologi digital yang semakin pesat memberikan peluang bagi generasi muda untuk mengembangkan potensi, kreativitas, dan kemampuan yang dimiliki. Generasi muda tidak hanya dituntut mengikuti perkembangan teknologi, tetapi juga mampu berinovasi, berkompetisi, dan bekerja sama.</p>
+    <p class="reveal d2">Sebagai wadah pengembangan potensi tersebut, HIMATIF menyelenggarakan <strong>Exporia HIMATIF 2027</strong> yang menggabungkan edukasi, kompetisi, kreativitas, dan kebersamaan melalui Seminar Nasional, Lomba Cerdas Cermat, Lomba Futsal, dan Malam Puncak.</p>
+
+    <svg class="page-illustration reveal d2" viewBox="0 0 700 190" aria-hidden="true">
+      <defs>
+        <linearGradient id="growth" x1="0" y1="1" x2="1" y2="0">
+          <stop offset="0%" stop-color="#0fb9b1"/><stop offset="100%" stop-color="#6c3fc5"/>
+        </linearGradient>
+        <linearGradient id="growthFill" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#6c3fc5" stop-opacity=".22"/>
+          <stop offset="100%" stop-color="#0fb9b1" stop-opacity="0"/>
+        </linearGradient>
+      </defs>
+      <rect width="700" height="190" rx="14" fill="#f7f5ff"/>
+      <g stroke="#e6e1f7" stroke-width="1">
+        <line x1="60" y1="40" x2="660" y2="40"/><line x1="60" y1="80" x2="660" y2="80"/>
+        <line x1="60" y1="120" x2="660" y2="120"/><line x1="60" y1="160" x2="660" y2="160"/>
+      </g>
+      <path d="M60 150 C150 145 200 120 280 112 C360 104 400 78 480 62 C540 50 610 36 660 26 L660 170 L60 170 Z" fill="url(#growthFill)"/>
+      <path d="M60 150 C150 145 200 120 280 112 C360 104 400 78 480 62 C540 50 610 36 660 26" fill="none" stroke="url(#growth)" stroke-width="4" stroke-linecap="round" stroke-dasharray="900" stroke-dashoffset="900">
+        <animate attributeName="stroke-dashoffset" from="900" to="0" dur="1.8s" fill="freeze"/>
+      </path>
+      <g fill="#fff" stroke="#6c3fc5" stroke-width="3">
+        <circle cx="60" cy="150" r="6"/><circle cx="280" cy="112" r="6"/>
+        <circle cx="480" cy="62" r="6"/><circle cx="660" cy="26" r="6"/>
+      </g>
+      <g font-family="Segoe UI, sans-serif" font-size="10" fill="#42506b">
+        <text x="60" y="184" text-anchor="middle">Edukasi</text>
+        <text x="280" y="184" text-anchor="middle">Kompetisi</text>
+        <text x="480" y="184" text-anchor="middle">Kreativitas</text>
+        <text x="660" y="184" text-anchor="middle">Kolaborasi</text>
+      </g>
+      <g transform="translate(600,20)">
+        <circle cx="0" cy="0" r="20" fill="url(#growth)" opacity=".16"/>
+        <path d="M0 -9 L3 -2 L10 0 L3 2 L0 9 L-3 2 L-10 0 L-3 -2 Z" fill="url(#growth)"/>
+      </g>
+    </svg>
+
+    <h2 class="reveal d3">B. Tema Kegiatan</h2>
+    <div class="card accent reveal d3">
+      <h4>Mengembangkan Potensi Generasi Muda melalui Inovasi, Kompetisi, dan Kebersamaan di Era Digital</h4>
+      <p class="muted">Memadukan penguatan wawasan teknologi, semangat berkompetisi yang sehat, serta nilai kebersamaan sebagai fondasi generasi muda.</p>
+    </div>
+
+    <h2 class="reveal d3">C. Tujuan Kegiatan</h2>
+    <ul class="clean reveal d4">
+      <li>Mengembangkan pengetahuan dan wawasan generasi muda di bidang teknologi informasi.</li>
+      <li>Menumbuhkan kreativitas, inovasi, dan daya saing melalui rangkaian kompetisi.</li>
+      <li>Mempererat kebersamaan antar mahasiswa, pelajar, dan masyarakat umum.</li>
+      <li>Menjadi media promosi dan pengabdian bagi pihak yang mendukung kegiatan.</li>
+    </ul>
+  </div>
+  <div class="brandbar"></div>
+  <div class="pagenum">04</div>
+</section>
+
+<!-- ================= 05 PROFIL ================= -->
+<section class="page" id="p5">
+  <div class="pad">
+    <div class="bab-label reveal">Bab II</div>
+    <h1 class="bab reveal d1">Profil Kegiatan</h1>
+    <div class="section-rule reveal d1"></div>
+
+    <div class="kv reveal d1"><span class="k">Nama Kegiatan</span><span class="v"><strong>EXPORIA HIMATIF 2027</strong></span></div>
+    <div class="kv reveal d1"><span class="k">Hari / Tanggal</span><span class="v">Sabtu &ndash; Minggu, 23 &ndash; 24 Januari 2027</span></div>
+    <div class="kv reveal d2"><span class="k">Waktu</span><span class="v">07.00 WIB &ndash; selesai</span></div>
+    <div class="kv reveal d2"><span class="k">Tempat</span><span class="v">Kampus Universitas Tangerang Raya, Gedung C &amp; King Futsal 2</span></div>
+    <div class="kv reveal d2"><span class="k">Penyelenggara</span><span class="v">Himpunan Mahasiswa Teknologi Informasi (HIMATIF)</span></div>
+
+    <h2 class="reveal d3">Rangkaian Kegiatan</h2>
+    <p class="muted reveal d3" style="font-size:9pt;">Arahkan kursor atau klik kartu untuk melihat detail.</p>
+
+    <div class="grid grid-2 reveal d3">
+      <div class="flip-card" tabindex="0">
+        <div class="flip-inner">
+          <div class="flip-face flip-front">
+            <div class="icon-badge" style="margin-bottom:4px;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 4h18v11H3z"/><path d="M12 15v4"/><path d="M8 21h8"/><path d="M7 8h6"/><path d="M7 11h4"/></svg>
+            </div>
+            <div class="t">Seminar Nasional</div>
+            <div class="hint">KLIK UNTUK DETAIL</div>
+          </div>
+          <div class="flip-face flip-back">
+            <b>Seminar Nasional</b>
+            Materi oleh pemateri nasional, diskusi dan tanya jawab, ice breaking, serta pemberian sertifikat peserta.
+          </div>
+        </div>
+      </div>
+
+      <div class="flip-card" tabindex="0">
+        <div class="flip-inner">
+          <div class="flip-face flip-front">
+            <div class="icon-badge" style="margin-bottom:4px;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 18h6"/><path d="M10 21h4"/><path d="M12 3a6 6 0 0 0-3.5 10.9c.5.4.8 1 .8 1.6V16h5.4v-.5c0-.6.3-1.2.8-1.6A6 6 0 0 0 12 3z"/></svg>
+            </div>
+            <div class="t">Lomba Cerdas Cermat</div>
+            <div class="hint">KLIK UNTUK DETAIL</div>
+          </div>
+          <div class="flip-face flip-back">
+            <b>Lomba Cerdas Cermat</b>
+            Kompetisi pelajar SMA/SMK/sederajat melalui babak soal acak dan babak tembak materi, dengan dewan juri.
+          </div>
+        </div>
+      </div>
+
+      <div class="flip-card" tabindex="0">
+        <div class="flip-inner">
+          <div class="flip-face flip-front">
+            <div class="icon-badge" style="margin-bottom:4px;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7l2.2 3.4 3.8 1.1-2.5 3 .3 4-3.8-1.8-3.8 1.8.3-4-2.5-3 3.8-1.1z"/></svg>
+            </div>
+            <div class="t">Lomba Futsal</div>
+            <div class="hint">KLIK UNTUK DETAIL</div>
+          </div>
+          <div class="flip-face flip-back">
+            <b>Lomba Futsal</b>
+            Turnamen antar tim di King Futsal 2, mulai technical meeting, babak penyisihan, semifinal, hingga final.
+          </div>
+        </div>
+      </div>
+
+      <div class="flip-card" tabindex="0">
+        <div class="flip-inner">
+          <div class="flip-face flip-front">
+            <div class="icon-badge" style="margin-bottom:4px;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l2.6 5.6 6.1.8-4.5 4.2 1.2 6-5.4-3-5.4 3 1.2-6L3.3 9.4l6.1-.8z"/></svg>
+            </div>
+            <div class="t">Malam Puncak</div>
+            <div class="hint">KLIK UNTUK DETAIL</div>
+          </div>
+          <div class="flip-face flip-back">
+            <b>Malam Puncak</b>
+            Pengumuman juara, pemberian hadiah, hiburan, dan kegiatan kebersamaan panitia serta peserta.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="note reveal d4">Setiap rangkaian acara membuka peluang eksposur sponsor yang berbeda, mulai dari panggung utama hingga media publikasi digital.</div>
+  </div>
+  <div class="brandbar"></div>
+  <div class="pagenum">05</div>
+</section>
+
+<!-- ================= 06 GALERI ================= -->
+<section class="page" id="p6">
+  <div class="pad">
+    <div class="bab-label reveal">Galeri</div>
+    <h1 class="bab reveal d1">Suasana Rangkaian Acara</h1>
+    <div class="section-rule reveal d1"></div>
+    <p class="muted reveal d1" style="font-size:9pt;">Ilustrasi suasana kegiatan. Klik gambar untuk memperbesar.</p>
+
+    <div class="gallery reveal d2">
+      <div class="gallery-item" data-title="Seminar Nasional" data-cap="Penyampaian materi, diskusi, dan tanya jawab bersama pemateri.">
+        <img src="https://i.ibb.co.com/xScTwKxz/seminar.jpg" alt="Seminar Nasional" loading="lazy">
+        <div class="gallery-cap">Seminar Nasional<small>Materi, diskusi, dan tanya jawab</small></div>
+      </div>
+
+      <div class="gallery-item" data-title="Lomba Cerdas Cermat" data-cap="Babak soal acak dan tembak materi dengan dewan juri.">
+        <img src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&w=1200&q=80" alt="Lomba Cerdas Cermat" loading="lazy">
+        <div class="gallery-cap">Lomba Cerdas Cermat<small>Soal acak &amp; tembak materi</small></div>
+      </div>
+
+      <div class="gallery-item" data-title="Lomba Futsal" data-cap="Pertandingan antar tim dari penyisihan hingga final.">
+        <img src="https://i.ibb.co.com/Ldhffgz8/IMG-7388-qx-URr-W.jpg" " alt="Lomba Futsal" loading="lazy">
+        <div class="gallery-cap">Lomba Futsal<small>King Futsal 2</small></div>
+      </div>
+
+      <div class="gallery-item" data-title="Malam Puncak" data-cap="Pengumuman juara, hadiah, dan hiburan bersama.">
+        <img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=1200&q=80" alt="Malam Puncak" loading="lazy">
+        <div class="gallery-cap">Malam Puncak<small>Juara, hadiah, dan hiburan</small></div>
+      </div>
+    </div>
+
+    <div class="note reveal d3"></div>
+  <div class="brandbar"></div>
+  <div class="pagenum">06</div>
+</section>
+
+<!-- ================= 07 RUNDOWN HARI 1 ================= -->
+<section class="page" id="p7">
+  <div class="pad">
+    <div class="bab-label reveal">Bab II &mdash; Rundown</div>
+    <h1 class="bab reveal d1">Hari Ke-1</h1>
+    <div class="section-rule reveal d1"></div>
+    <p class="muted reveal d1" style="font-size:9pt;margin-bottom:4px;">Sabtu, 23 Januari 2027 &middot; Klik filter untuk menyorot rangkaian acara.</p>
+
+    <div class="chips reveal d1" data-chips="day1">
+      <button class="chip-btn active" data-filter="all">Semua</button>
+      <button class="chip-btn" data-filter="seminar">Seminar</button>
+      <button class="chip-btn" data-filter="futsal">Futsal</button>
+      <button class="chip-btn" data-filter="puncak">Persiapan</button>
+    </div>
+
+    <table class="reveal d2" data-table="day1">
+      <thead><tr><th style="width:21%">Waktu</th><th>Acara</th><th style="width:27%">Tempat</th></tr></thead>
+      <tbody>
+        <tr data-track="seminar"><td>08.00 &ndash; 08.30</td><td>Registrasi Peserta</td><td>Universitas Tangerang Raya</td></tr>
+        <tr data-track="seminar"><td>08.30 &ndash; 08.35</td><td>Persiapan &amp; Pembukaan oleh MC</td><td>Universitas Tangerang Raya</td></tr>
+        <tr data-track="seminar"><td>08.35 &ndash; 08.45</td><td>Lagu Indonesia Raya &amp; Mars Untara</td><td>Universitas Tangerang Raya</td></tr>
+        <tr data-track="seminar"><td>08.45 &ndash; 09.05</td><td>Sambutan</td><td>Universitas Tangerang Raya</td></tr>
+        <tr data-track="seminar"><td>09.05 &ndash; 09.10</td><td>Perkenalan Moderator &amp; Pemateri</td><td>Universitas Tangerang Raya</td></tr>
+        <tr data-track="seminar"><td>09.10 &ndash; 10.10</td><td>Penyampaian Materi Seminar</td><td>Universitas Tangerang Raya</td></tr>
+        <tr data-track="seminar"><td>10.10 &ndash; 10.20</td><td>Ice Breaking / Games</td><td>Universitas Tangerang Raya</td></tr>
+        <tr data-track="seminar"><td>10.20 &ndash; 10.55</td><td>Diskusi &amp; Tanya Jawab</td><td>Universitas Tangerang Raya</td></tr>
+        <tr data-track="seminar"><td>10.55 &ndash; 11.05</td><td>Kesimpulan &amp; Closing Statement</td><td>Universitas Tangerang Raya</td></tr>
+        <tr data-track="seminar"><td>11.05 &ndash; 11.15</td><td>Pemberian Sertifikat Pemateri</td><td>Universitas Tangerang Raya</td></tr>
+        <tr data-track="seminar"><td>11.15 &ndash; 11.30</td><td>Foto Bersama &amp; Penutupan</td><td>Universitas Tangerang Raya</td></tr>
+        <tr data-track="futsal"><td>14.00 &ndash; 14.30</td><td>Technical Meeting Futsal</td><td>King Futsal 2</td></tr>
+        <tr data-track="futsal"><td>14.30 &ndash; 15.00</td><td>Foto Bersama &amp; Persiapan Tim</td><td>King Futsal 2</td></tr>
+        <tr data-track="futsal"><td>15.00 &ndash; 17.05</td><td>Pertandingan Penyisihan</td><td>King Futsal 2</td></tr>
+        <tr data-track="futsal"><td>17.05 &ndash; 17.55</td><td>Semifinal &amp; Final</td><td>King Futsal 2</td></tr>
+        <tr data-track="puncak"><td>18.00 &ndash; 20.00</td><td>Evaluasi &amp; Persiapan Hari Kedua</td><td>Universitas Tangerang Raya</td></tr>
+      </tbody>
+    </table>
+
+    <div class="note reveal d3">Hari pertama memuat seluruh rangkaian Seminar Nasional dan pertandingan Futsal.</div>
+  </div>
+  <div class="brandbar"></div>
+  <div class="pagenum">07</div>
+</section>
+
+<!-- ================= 08 RUNDOWN HARI 2 ================= -->
+<section class="page" id="p8">
+  <div class="pad">
+    <div class="bab-label reveal">Bab II &mdash; Rundown</div>
+    <h1 class="bab reveal d1">Hari Ke-2</h1>
+    <div class="section-rule reveal d1"></div>
+    <p class="muted reveal d1" style="font-size:9pt;margin-bottom:4px;">Minggu, 24 Januari 2027 &middot; Klik filter untuk menyorot rangkaian acara.</p>
+
+    <div class="chips reveal d1" data-chips="day2">
+      <button class="chip-btn active" data-filter="all">Semua</button>
+      <button class="chip-btn" data-filter="lcc">LCC</button>
+      <button class="chip-btn" data-filter="puncak">Malam Puncak</button>
+    </div>
+
+    <table class="reveal d2" data-table="day2">
+      <thead><tr><th style="width:21%">Waktu</th><th>Acara</th><th style="width:27%">Tempat</th></tr></thead>
+      <tbody>
+        <tr data-track="lcc"><td>08.00 &ndash; 08.30</td><td>Registrasi Peserta LCC</td><td>Universitas Tangerang Raya</td></tr>
+        <tr data-track="lcc"><td>08.30 &ndash; 08.35</td><td>Pembukaan oleh MC</td><td>Universitas Tangerang Raya</td></tr>
+        <tr data-track="lcc"><td>08.35 &ndash; 08.45</td><td>Lagu Indonesia Raya</td><td>Universitas Tangerang Raya</td></tr>
+        <tr data-track="lcc"><td>08.45 &ndash; 09.05</td><td>Sambutan</td><td>Universitas Tangerang Raya</td></tr>
+        <tr data-track="lcc"><td>09.05 &ndash; 09.15</td><td>Pembacaan Peraturan &amp; Mekanisme</td><td>Universitas Tangerang Raya</td></tr>
+        <tr data-track="lcc"><td>09.15 &ndash; 10.15</td><td>Babak Soal Acak</td><td>Universitas Tangerang Raya</td></tr>
+        <tr data-track="lcc"><td>10.15 &ndash; 10.45</td><td>Pembacaan Nilai &amp; Istirahat</td><td>Universitas Tangerang Raya</td></tr>
+        <tr data-track="lcc"><td>10.45 &ndash; 11.45</td><td>Babak Tembak Materi</td><td>Universitas Tangerang Raya</td></tr>
+        <tr data-track="lcc"><td>11.45 &ndash; 12.10</td><td>Rekapitulasi &amp; Pengumuman Juara</td><td>Universitas Tangerang Raya</td></tr>
+        <tr data-track="lcc"><td>12.10 &ndash; 12.30</td><td>Hadiah, Sertifikat &amp; Penutupan</td><td>Universitas Tangerang Raya</td></tr>
+        <tr data-track="puncak"><td>18.30 &ndash; 19.00</td><td>Persiapan Panitia &amp; Open Gate</td><td>Universitas Tangerang Raya</td></tr>
+        <tr data-track="puncak"><td>19.00 &ndash; 19.10</td><td>Opening Malam Puncak</td><td>Universitas Tangerang Raya</td></tr>
+        <tr data-track="puncak"><td>19.10 &ndash; 19.20</td><td>Sambutan</td><td>Universitas Tangerang Raya</td></tr>
+        <tr data-track="puncak"><td>19.20 &ndash; 21.00</td><td>Rangkaian Malam Puncak &amp; Hiburan</td><td>Universitas Tangerang Raya</td></tr>
+      </tbody>
+    </table>
+
+    <div class="note reveal d3">Hari kedua memuat Lomba Cerdas Cermat dan Malam Puncak Exporia.</div>
+  </div>
+  <div class="brandbar"></div>
+  <div class="pagenum">08</div>
+</section>
+
+<!-- ================= 09 SASARAN & ANGGARAN ================= -->
+<section class="page" id="p9">
+  <div class="pad">
+    <div class="bab-label reveal">Bab III</div>
+    <h1 class="bab reveal d1">Sasaran &amp; Anggaran</h1>
+    <div class="section-rule reveal d1"></div>
+
+    <h2 class="reveal d1">A. Sasaran Kegiatan</h2>
+    <ul class="clean reveal d2">
+      <li>Mahasiswa, siswa, dan generasi muda yang berminat pada teknologi, kompetisi, dan kegiatan kreatif.</li>
+      <li>Pelajar SMA/SMK/sederajat sebagai peserta Lomba Cerdas Cermat.</li>
+      <li>Generasi muda dan masyarakat umum sebagai peserta maupun pengunjung.</li>
+    </ul>
+
+    <h2 class="reveal d2">B. Proyeksi Peserta</h2>
+    <div class="grid grid-4 reveal d2">
+      <div class="stat"><span class="b counter" data-target="100" data-suffix="+">0</span><span class="s">Peserta Seminar</span></div>
+      <div class="stat"><span class="b counter" data-target="50" data-suffix="+">0</span><span class="s">Peserta LCC</span></div>
+      <div class="stat"><span class="b counter" data-target="8" data-suffix="">0</span><span class="s">Tim Futsal</span></div>
+      <div class="stat"><span class="b counter" data-target="150" data-suffix="">0</span><span class="s">Merchandise</span></div>
+    </div>
+
+    <h2 class="reveal d3">C. Alokasi Anggaran</h2>
+    <p class="muted reveal d3" style="font-size:9pt;">Arahkan kursor ke segmen atau klik legenda untuk menyorot pos anggaran.</p>
+
+    <div class="donut-wrap reveal d3">
+      <svg class="donut" viewBox="0 0 200 200" aria-label="Diagram alokasi anggaran">
+        <circle cx="100" cy="100" r="70" fill="none" stroke="#eef1f8" stroke-width="26"/>
+        <g transform="rotate(-90 100 100)">
+          <circle class="donut-seg" data-key="acara" cx="100" cy="100" r="70" stroke="#6c3fc5" stroke-dasharray="0 439.82" stroke-dashoffset="0"/>
+          <circle class="donut-seg" data-key="danus" cx="100" cy="100" r="70" stroke="#0fb9b1" stroke-dasharray="0 439.82" stroke-dashoffset="-242.66"/>
+          <circle class="donut-seg" data-key="konsumsi" cx="100" cy="100" r="70" stroke="#3f8bd8" stroke-dasharray="0 439.82" stroke-dashoffset="-340.00"/>
+          <circle class="donut-seg" data-key="pdd" cx="100" cy="100" r="70" stroke="#a45cd6" stroke-dasharray="0 439.82" stroke-dashoffset="-391.33"/>
+          <circle class="donut-seg" data-key="korlap" cx="100" cy="100" r="70" stroke="#ff8a3d" stroke-dasharray="0 439.82" stroke-dashoffset="-414.42"/>
+          <circle class="donut-seg" data-key="perlengkapan" cx="100" cy="100" r="70" stroke="#f5a623" stroke-dasharray="0 439.82" stroke-dashoffset="-425.55"/>
+          <circle class="donut-seg" data-key="sponsorship" cx="100" cy="100" r="70" stroke="#ff5c8a" stroke-dasharray="0 439.82" stroke-dashoffset="-431.09"/>
+          <circle class="donut-seg" data-key="humas" cx="100" cy="100" r="70" stroke="#9aa7bd" stroke-dasharray="0 439.82" stroke-dashoffset="-436.10"/>
+        </g>
+        <text class="donut-center" x="100" y="96" text-anchor="middle">Rp 23,7 jt</text>
+        <text class="donut-center2" x="100" y="112" text-anchor="middle">TOTAL ANGGARAN</text>
+      </svg>
+
+      <div class="legend">
+        <button data-key="acara"><span class="dot" style="background:#6c3fc5"></span>Acara<span class="val">Rp 13.090.000</span></button>
+        <button data-key="danus"><span class="dot" style="background:#0fb9b1"></span>Danus<span class="val">Rp 5.250.000</span></button>
+        <button data-key="konsumsi"><span class="dot" style="background:#3f8bd8"></span>Konsumsi<span class="val">Rp 2.770.000</span></button>
+        <button data-key="pdd"><span class="dot" style="background:#a45cd6"></span>PDD<span class="val">Rp 1.246.400</span></button>
+        <button data-key="korlap"><span class="dot" style="background:#ff8a3d"></span>Korlap<span class="val">Rp 600.000</span></button>
+        <button data-key="perlengkapan"><span class="dot" style="background:#f5a623"></span>Perlengkapan<span class="val">Rp 300.000</span></button>
+        <button data-key="sponsorship"><span class="dot" style="background:#ff5c8a"></span>Sponsorship<span class="val">Rp 270.000</span></button>
+        <button data-key="humas"><span class="dot" style="background:#9aa7bd"></span>Humas<span class="val">Rp 200.000</span></button>
+      </div>
+    </div>
+
+    <div class="note reveal d4">Total kebutuhan anggaran kegiatan sebesar <strong>Rp 23.726.400</strong>. Partisipasi sponsor dialokasikan langsung untuk kelancaran seluruh rangkaian acara.</div>
+  </div>
+  <div class="brandbar"></div>
+  <div class="pagenum">09</div>
+</section>
+
+<!-- ================= 10 PELUANG SPONSOR ================= -->
+<section class="page" id="p10">
+  <div class="pad">
+    <div class="bab-label reveal">Bab IV</div>
+    <h1 class="bab reveal d1">Peluang &amp; Manfaat</h1>
+    <div class="section-rule reveal d1"></div>
+
+    <h2 class="reveal d1">A. Mengapa Menjadi Sponsor?</h2>
+    <div class="grid grid-2 reveal d2">
+      <div class="card">
+        <div class="icon-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.4"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><path d="M15.5 14.2c2.6.3 4.5 2.3 4.5 5.8"/></svg>
+        </div>
+        <h4>Jangkauan Audiens Muda</h4>
+        <p class="muted">Menjangkau mahasiswa, pelajar, dan masyarakat umum, khususnya generasi muda pengguna teknologi.</p>
+      </div>
+      <div class="card">
+        <div class="icon-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 11l18-8-8 18-2-8z"/></svg>
+        </div>
+        <h4>Eksposur Multi-Kanal</h4>
+        <p class="muted">Brand tampil pada banner, backdrop, flyer, media sosial, dan publikasi digital panitia.</p>
+      </div>
+      <div class="card">
+        <div class="icon-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+        </div>
+        <h4>Durasi Promosi Panjang</h4>
+        <p class="muted">Logo dan nama brand tercantum pada materi pra-acara hingga pasca-acara.</p>
+      </div>
+      <div class="card">
+        <div class="icon-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 5.6-7 10-7 10z"/></svg>
+        </div>
+        <h4>Dampak Citra Positif</h4>
+        <p class="muted">Mendukung pendidikan, pengembangan potensi, dan kegiatan positif generasi muda.</p>
+      </div>
+    </div>
+
+    <h2 class="reveal d3">B. Media Eksposur</h2>
+    <div class="grid grid-3 reveal d3">
+      <div class="card accent"><h4>Banner &amp; Backdrop</h4><p class="muted">Backdrop panggung, banner seminar, LCC, dan malam puncak.</p></div>
+      <div class="card accent"><h4>Materi Cetak &amp; Digital</h4><p class="muted">Flyer, sertifikat, ID card, dan media sosial panitia.</p></div>
+      <div class="card accent"><h4>Merchandise</h4><p class="muted">Ganci, gelas kaca, dan tas serut untuk peserta.</p></div>
+    </div>
+
+    <h2 class="reveal d4">C. Bentuk Kerja Sama</h2>
+    <table class="reveal d4">
+      <thead><tr><th>Jenis</th><th>Keterangan</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Sponsor Tunai</strong></td><td>Dukungan dana untuk kebutuhan kegiatan.</td></tr>
+        <tr><td><strong>Sponsor In-Kind</strong></td><td>Produk, merchandise, hadiah, atau perlengkapan acara.</td></tr>
+        <tr><td><strong>Media Partner</strong></td><td>Dukungan publikasi dan penyebaran informasi kegiatan.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="brandbar"></div>
+  <div class="pagenum">10</div>
+</section>
+
+<!-- ================= 11 PAKET SPONSOR ================= -->
+<section class="page" id="p11">
+  <div class="pad">
+    <div class="bab-label reveal">Bab V</div>
+    <h1 class="bab reveal d1">Paket Sponsorship</h1>
+    <div class="section-rule reveal d1"></div>
+    <p class="reveal d1" style="font-size:9.5pt;">Klik salah satu paket untuk memilih. Gunakan tombol perbandingan untuk melihat seluruh benefit.</p>
+
+    <div class="tiers reveal d2">
+      <div class="tier title" data-tier="Title Sponsor" data-price="Rp 7.500.000 &ndash; 10.000.000" tabindex="0">
+        <div class="head">
+          <div class="rank">Title</div>
+          <div class="price">Rp 7,5&ndash;10 jt</div>
+        </div>
+        <div class="body">
+          <ul>
+            <li>Naming rights: &ldquo;EXPORIA HIMATIF 2027 powered by [Brand]&rdquo;</li>
+            <li>Eksklusivitas 1 kategori industri</li>
+            <li>Logo 100% pada backdrop utama &amp; 3 backdrop sesi</li>
+            <li>Video komersial 30 dtk &times; 3</li>
+            <li>Video bumper di 5 konten resmi</li>
+            <li>Session naming rights 1 sesi</li>
+            <li>Booth premium 3&times;3 m, 2 hari</li>
+            <li>3 dedicated feed + 5 IG story</li>
+            <li>Product sampling</li>
+            <li>MC ad-lib 5 sesi + pembukaan &amp; penutupan</li>
+            <li>Kolaborasi hadiah utama kompetisi</li>
+            <li>Plakat + sertifikat Main Partner</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="tier platinum" data-tier="Platinum" data-price="Rp 5.000.000" tabindex="0">
+        <div class="head">
+          <div class="rank">Platinum</div>
+          <div class="price">Rp 5.000.000</div>
+        </div>
+        <div class="body">
+          <ul>
+            <li>Logo 75% &mdash; backdrop utama &amp; 2 backdrop sesi</li>
+            <li>Video komersial 15&ndash;30 dtk &times; 2</li>
+            <li>Video bumper di 3 konten resmi</li>
+            <li>Booth 2&times;2 m, 2 hari</li>
+            <li>2 dedicated feed + 3 IG story</li>
+            <li>Product sampling / merchandise</li>
+            <li>MC ad-lib 3 sesi</li>
+            <li>Logo ID card panitia</li>
+            <li>Plakat/sertifikat partner</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="tier gold" data-tier="Gold" data-price="Rp 3.000.000" tabindex="0">
+        <div class="head">
+          <div class="rank">Gold</div>
+          <div class="price">Rp 3.000.000</div>
+        </div>
+        <div class="body">
+          <ul>
+            <li>Logo 50% &mdash; backdrop utama &amp; 1 backdrop sesi</li>
+            <li>Video komersial 15 dtk &times; 1</li>
+            <li>Booth 2&times;1 m, 1 hari</li>
+            <li>1 dedicated feed + 2 IG story</li>
+            <li>Flyer/merchandise di partner kit</li>
+            <li>MC ad-lib 1 sesi</li>
+            <li>Sertifikat partner</li>
+            <li class="no">Video bumper</li>
+            <li class="no">Logo ID card panitia</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="tier silver" data-tier="Silver" data-price="Rp 1.500.000" tabindex="0">
+        <div class="head">
+          <div class="rank">Silver</div>
+          <div class="price">Rp 1.500.000</div>
+        </div>
+        <div class="body">
+          <ul>
+            <li>Logo 25% &mdash; banner &amp; publikasi digital</li>
+            <li>Mention media sosial</li>
+            <li>1 IG story mention</li>
+            <li>Insertion flyer di partner kit</li>
+            <li>Pencantuman pada atribut pendukung</li>
+            <li>Sertifikat penghargaan</li>
+            <li>Mention post &ldquo;Terima Kasih Partner&rdquo;</li>
+            <li class="no">Video komersial</li>
+            <li class="no">Booth</li>
+            <li class="no">MC ad-lib</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="tier-summary reveal d3">
+      <div>Paket dipilih: <b id="tierName">Belum dipilih</b></div>
+      <div>Kontribusi: <b id="tierPrice">&ndash;</b></div>
+    </div>
+
+    <button class="compare-toggle reveal d3" id="compareBtn">Bandingkan semua paket</button>
+
+    <div class="compare-table" id="compareTable">
+      <table>
+        <thead><tr><th>Benefit</th><th class="center">Title</th><th class="center">Platinum</th><th class="center">Gold</th><th class="center">Silver</th></tr></thead>
+        <tbody>
+          <tr><td>Kontribusi</td><td class="center">Rp 7,5&ndash;10 jt</td><td class="center">Rp 5 jt</td><td class="center">Rp 3 jt</td><td class="center">Rp 1,5 jt</td></tr>
+          <tr><td>Kuota</td><td class="center">1</td><td class="center">maks 2</td><td class="center">maks 3</td><td class="center">maks 5</td></tr>
+          <tr><td>Ukuran logo</td><td class="center">100%</td><td class="center">75%</td><td class="center">50%</td><td class="center">25%</td></tr>
+          <tr><td>Backdrop</td><td class="center">Utama + 3 sesi</td><td class="center">Utama + 2 sesi</td><td class="center">Utama + 1 sesi</td><td class="center">Utama</td></tr>
+          <tr><td>Video komersial</td><td class="center">30 dtk &times; 3</td><td class="center">15&ndash;30 dtk &times; 2</td><td class="center">15 dtk &times; 1</td><td class="center">&ndash;</td></tr>
+          <tr><td>Video bumper</td><td class="center">5 konten</td><td class="center">3 konten</td><td class="center">1 konten</td><td class="center">&ndash;</td></tr>
+          <tr><td>Dedicated feed</td><td class="center">3 post</td><td class="center">2 post</td><td class="center">1 post</td><td class="center">Mention</td></tr>
+          <tr><td>Instagram story</td><td class="center">5</td><td class="center">3</td><td class="center">2</td><td class="center">1</td></tr>
+          <tr><td>Booth</td><td class="center">3&times;3 m &middot; 2 hari</td><td class="center">2&times;2 m &middot; 2 hari</td><td class="center">2&times;1 m &middot; 1 hari</td><td class="center">&ndash;</td></tr>
+          <tr><td>MC ad-lib</td><td class="center">5 sesi + open/close</td><td class="center">3 sesi</td><td class="center">1 sesi</td><td class="center">Credit pembukaan</td></tr>
+          <tr><td>Sertifikat/plakat</td><td class="center">Plakat + sertifikat</td><td class="center">Plakat/sertifikat</td><td class="center">Sertifikat</td><td class="center">Sertifikat</td></tr>
+          <tr><td>Laporan akhir</td><td class="center">Lengkap</td><td class="center">Lengkap</td><td class="center">Standar</td><td class="center">Ringkas</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="note reveal d4">Besaran dan bentuk kontraprestasi dapat dinegosiasikan sesuai kesepakatan bersama.</div>
+  </div>
+  <div class="brandbar"></div>
+  <div class="pagenum">11</div>
+</section>
+
+<!-- ================= 12 RAB ================= -->
+<section class="page" id="p12">
+  <div class="pad">
+    <div class="bab-label reveal">Bab VI</div>
+    <h1 class="bab reveal d1">Rancangan Anggaran</h1>
+    <div class="section-rule reveal d1"></div>
+
+    <p class="table-title reveal d1">Rekapitulasi per Divisi</p>
+    <div class="bars reveal d2">
+      <div class="bar-row"><span>Acara</span><div class="bar-track"><div class="bar-fill" data-pct="100"></div></div><span class="num">13.090.000</span></div>
+      <div class="bar-row"><span>Danus</span><div class="bar-track"><div class="bar-fill" data-pct="40.1"></div></div><span class="num">5.250.000</span></div>
+      <div class="bar-row"><span>Konsumsi</span><div class="bar-track"><div class="bar-fill" data-pct="21.2"></div></div><span class="num">2.770.000</span></div>
+      <div class="bar-row"><span>PDD</span><div class="bar-track"><div class="bar-fill" data-pct="9.5"></div></div><span class="num">1.246.400</span></div>
+      <div class="bar-row"><span>Korlap</span><div class="bar-track"><div class="bar-fill" data-pct="4.6"></div></div><span class="num">600.000</span></div>
+      <div class="bar-row"><span>Perlengkapan</span><div class="bar-track"><div class="bar-fill" data-pct="2.3"></div></div><span class="num">300.000</span></div>
+      <div class="bar-row"><span>Sponsorship</span><div class="bar-track"><div class="bar-fill" data-pct="2.1"></div></div><span class="num">270.000</span></div>
+      <div class="bar-row"><span>Humas</span><div class="bar-track"><div class="bar-fill" data-pct="1.5"></div></div><span class="num">200.000</span></div>
+    </div>
+
+    <table class="reveal d3">
+      <thead><tr><th>Divisi</th><th>Keterangan Utama</th><th class="num">Total</th></tr></thead>
+      <tbody>
+        <tr><td>Acara</td><td>Seminar, Futsal, LCC, Malam Puncak</td><td class="num">Rp 13.090.000</td></tr>
+        <tr><td>Danus</td><td>Merchandise (ganci, gelas, tas serut)</td><td class="num">Rp 5.250.000</td></tr>
+        <tr><td>Konsumsi</td><td>Konsumsi peserta &amp; panitia</td><td class="num">Rp 2.770.000</td></tr>
+        <tr><td>PDD</td><td>Banner, sertifikat, cetak desain</td><td class="num">Rp 1.246.400</td></tr>
+        <tr><td>Korlap</td><td>Kebutuhan koordinasi lapangan</td><td class="num">Rp 600.000</td></tr>
+        <tr><td>Perlengkapan</td><td>Perlengkapan acara &amp; teknis</td><td class="num">Rp 300.000</td></tr>
+        <tr><td>Sponsorship</td><td>Cetak proposal &amp; materai MoU</td><td class="num">Rp 270.000</td></tr>
+        <tr><td>Humas</td><td>Surat-surat &amp; ATK</td><td class="num">Rp 200.000</td></tr>
+      </tbody>
+      <tfoot><tr><td colspan="2">TOTAL KESELURUHAN</td><td class="num">Rp 23.726.400</td></tr></tfoot>
+    </table>
+
+    <div class="note reveal d4">Dana sponsor dialokasikan terutama untuk penyelenggaraan acara, konsumsi peserta, serta publikasi dan dokumentasi. Seluruh penggunaan dana dipertanggungjawabkan oleh panitia.</div>
+  </div>
+  <div class="brandbar"></div>
+  <div class="pagenum">12</div>
+</section>
+
+<!-- ================= 13 KEPANITIAAN ================= -->
+<section class="page" id="p13">
+  <div class="pad">
+    <div class="bab-label reveal">Bab VII</div>
+    <h1 class="bab reveal d1">Susunan Kepanitiaan</h1>
+    <div class="section-rule reveal d1"></div>
+    <p class="muted reveal d1" style="font-size:9pt;">Klik divisi untuk melihat anggota. Struktur lengkap tersedia pada Lampiran 2.</p>
+
+    <div class="grid grid-2 reveal d2">
+      <div class="card accent">
+        <h4>Steering Committee</h4>
+        <p class="muted"><strong>Pelindung:</strong> Saryani, S.Kom., M.Ti<br>
+        <strong>Penanggung Jawab:</strong> Anindita Bunkal<br>
+        <strong>Penasihat:</strong> M. Dimas Bayu Pratama</p>
+      </div>
+      <div class="card accent">
+        <h4>Organizing Committee</h4>
+        <p class="muted"><strong>Ketua Pelaksana:</strong> Haris Munandar<br>
+        <strong>Sekretaris I:</strong> Cucumu Indah A.P.W.<br>
+        <strong>Sekretaris II:</strong> Sofi Sulastri<br>
+        <strong>Bendahara I:</strong> Iqra Tri Karunia<br>
+        <strong>Bendahara II:</strong> Fendi</p>
+      </div>
+    </div>
+
+    <h2 class="reveal d3">Divisi &amp; Anggota</h2>
+    <div class="reveal d3">
+      <div class="org-item">
+        <div class="org-head"><span class="role">Divisi Acara &mdash; Eka Rahma Prasetyo</span><span class="plus">+</span></div>
+        <div class="org-body"><ul>
+          <li>Chandra Elisa</li><li>M. Halid Rizky</li><li>M. Rama Rizky</li><li>M. Ikhsan Tammim Falah</li>
+        </ul></div>
+      </div>
+      <div class="org-item">
+        <div class="org-head"><span class="role">Divisi Humas &mdash; Rio Julian Gunawan</span><span class="plus">+</span></div>
+        <div class="org-body"><ul>
+          <li>Widiandra Maywa Ilham</li><li>Mustopa Rega Sipa</li><li>Ahmad Fikri Firdaus</li>
+        </ul></div>
+      </div>
+      <div class="org-item">
+        <div class="org-head"><span class="role">Divisi Sponsorship &mdash; Fajar Eka Diyan Permana</span><span class="plus">+</span></div>
+        <div class="org-body"><ul>
+          <li>Dafa Radja Zoelyanto</li><li>Attha Mauluna Isnainy Putrie</li>
+        </ul></div>
+      </div>
+      <div class="org-item">
+        <div class="org-head"><span class="role">Divisi PDD &mdash; Nadia Eka Rahmawati</span><span class="plus">+</span></div>
+        <div class="org-body"><ul>
+          <li>Mutiara Ramadhani</li><li>Mido Reksa Putra</li><li>M. Rafly</li>
+        </ul></div>
+      </div>
+      <div class="org-item">
+        <div class="org-head"><span class="role">Divisi Perlengkapan &mdash; Gilang Pratama</span><span class="plus">+</span></div>
+        <div class="org-body"><ul>
+          <li>Maulana Bayu Satria</li><li>M. Al Amin</li>
+        </ul></div>
+      </div>
+      <div class="org-item">
+        <div class="org-head"><span class="role">Divisi Korlap &mdash; Firsyha</span><span class="plus">+</span></div>
+        <div class="org-body"><ul>
+          <li>Ikhsan Abi Mauluna</li><li>Saepullah</li><li>M. Faiz Firmansyah</li>
+        </ul></div>
+      </div>
+      <div class="org-item">
+        <div class="org-head"><span class="role">Divisi Konsumsi &mdash; Dinar Hafidzah Maesyarah</span><span class="plus">+</span></div>
+        <div class="org-body"><ul>
+          <li>Imanuel Totti Wijaya</li><li>Dimas Bayu Wibiastanto</li>
+        </ul></div>
+      </div>
+      <div class="org-item">
+        <div class="org-head"><span class="role">Divisi Danus &mdash; Dimas Bayu Wibiastanto</span><span class="plus">+</span></div>
+        <div class="org-body"><ul>
+          <li>Nabila Rahma F.</li><li>M. Faiq Fadhoilurrafiq</li>
+        </ul></div>
+      </div>
+    </div>
+  </div>
+  <div class="brandbar"></div>
+  <div class="pagenum">13</div>
+</section>
+
+<!-- ================= 14 PENUTUP ================= -->
+<section class="page" id="p14">
+  <div class="pad">
+    <div class="bab-label reveal">Bab VIII</div>
+    <h1 class="bab reveal d1">Penutup</h1>
+    <div class="section-rule reveal d1"></div>
+
+    <p class="reveal d1">Dengan demikian proposal ini kami buat. Kami selaku tim penyusun proposal kegiatan &ldquo;EXPORIA HIMATIF 2027&rdquo; telah berusaha sepenuhnya dengan kemampuan yang ada. Kami menyadari masih terdapat kekurangan, sehingga kami memohon maaf sebesar-besarnya.</p>
+    <p class="reveal d2">Atas bantuan semua pihak yang turut menyukseskan kegiatan, kami ucapkan terima kasih. Semoga apa yang telah kami lakukan dapat bermanfaat untuk kedepannya.</p>
+    <p class="reveal d2">Kami sangat mengharapkan dukungan dan kerja sama Bapak/Ibu serta perusahaan yang diwakili untuk bersama-sama menyukseskan <strong>Exporia Himatif 2027</strong>. Semoga kerja sama ini menjadi awal kolaborasi yang bermanfaat bagi kedua belah pihak.</p>
+
+    <div class="divider reveal d3"></div>
+
+    <div class="center reveal d3">
+      <div class="bab-label">Lembar Persetujuan</div>
+      <h2 style="border:0;padding:0;font-size:13pt;">Hormat Kami, Panitia Exporia Himatif 2027</h2>
+    </div>
+
+    <div class="sign-grid reveal d3">
+      <div class="sign">
+        <div class="role">Sekretaris Pelaksana</div>
+        <img class="sign-img" src="https://i.ibb.co.com/R4HJbGdj/ttd-pipit.jpg" alt="Tanda tangan Cucumu Indah A.P.W.">
+        <div class="name">CUCUMU INDAH A.P.W.</div>
+        <div class="id">NIM: 24131310022</div>
+      </div>
+      <div class="sign">
+        <div class="role">Ketua Pelaksana</div>
+        <img class="sign-img" src="https://i.ibb.co.com/Mxb6Y17v/ttd-haris.jpg" alt="Tanda tangan Haris Munandar">
+        <div class="name">HARIS MUNANDAR</div>
+        <div class="id">NIM: 24131310052</div>
+      </div>
+    </div>
+
+    <div class="sign-grid reveal d4" style="margin-top:22px;">
+      <div class="sign">
+        <div class="role">Ketua Umum HIMATIF</div>
+        <img class="sign-img" src="https://i.ibb.co.com/DfRLrpyK/ttd-anindita-bunkal.jpg" alt="Tanda tangan Anindita Bunkal">
+        <div class="name">ANINDITA BUNKAL</div>
+        <div class="id">NIM: 24131310015</div>
+      </div>
+      <div class="sign">
+        <div class="role">Kaprodi Teknologi Informasi</div>
+        <img class="sign-img" src="https://i.ibb.co.com/fVfhrKLv/ttd-bu-yani.jpg" alt="Tanda tangan Saryani">
+        <div class="name">SARYANI, S.KOM., M.TI</div>
+        <div class="id">NIDN: 0407098401</div>
+      </div>
+    </div>
+  </div>
+  <div class="brandbar"></div>
+  <div class="pagenum">14</div>
+</section>
+
+<!-- ================= 15 KONTAK ================= -->
+<section class="page" id="p15">
+  <div class="pad">
+    <div class="bab-label reveal">Narahubung</div>
+    <h1 class="bab reveal d1">Mari Berkolaborasi</h1>
+    <div class="section-rule reveal d1"></div>
+
+    <p class="reveal d1">Kami terbuka untuk berdiskusi mengenai bentuk kerja sama yang paling sesuai dengan kebutuhan mitra. Silakan menghubungi narahubung berikut.</p>
+
+    <div class="contact-row reveal d2">
+      <div class="card accent">
+        <h4>Penanggung Jawab</h4>
+        <p><strong>Anindita Bunkal</strong><br><span class="muted">Penanggung Jawab Kegiatan</span></p>
+        <p class="muted" style="font-size:9pt;">No. telp <a class="wa-link" href="https://wa.me/6281234567890" target="_blank" rel="noopener">0812-3456-7890</a></p>
+        <button class="copy-btn" data-copy="Anindita Bunkal">Salin nama</button>
+        <a class="copy-btn wa-link" href="https://wa.me/qr/INORKGCUZ4OXG1" target="_blank" rel="noopener" style="text-decoration:none;display:inline-block;">Chat WhatsApp</a>
+      </div>
+      <div class="card accent">
+        <h4>Ketua Pelaksana</h4>
+        <p><strong>Haris Munandar</strong><br><span class="muted">NIM: 24131310052</span></p>
+        <button class="copy-btn" data-copy="Haris Munandar">Salin nama</button>
+      </div>
+      <div class="card accent">
+        <h4>Divisi Sponsorship</h4>
+        <p><strong>Fajar Eka Diyan Permana</strong><br><span class="muted">Koordinator Sponsorship</span></p>
+        <button class="copy-btn" data-copy="Fajar Eka Diyan Permana">Salin nama</button>
+      </div>
+    </div>
+
+    <div class="grid grid-2 reveal d3" style="margin-top:12px;">
+      <div class="card">
+        <h4>Alamat Sekretariat</h4>
+        <p class="muted">Himpunan Mahasiswa Teknologi Informasi<br>Universitas Tangerang Raya<br>Periode 2026 &ndash; 2027</p>
+      </div>
+      <div class="card" style="display:flex;align-items:center;gap:14px;">
+        <a href="https://wa.me/message/GMC3F7JYVVUMC1" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:14px;text-decoration:none;color:inherit;">
+          <img class="qr-img" src="https://i.ibb.co.com/bMmy1yQJ/kontak.jpg" alt="QR Code Kontak Panitia">
+          <span>
+            <h4 style="color:var(--teal-dark);">Pindai untuk Kontak</h4>
+            <p class="muted" style="font-size:8.6pt;">Klik atau pindai untuk terhubung via WhatsApp panitia.</p>
+            <p style="font-size:8.6pt;margin-top:4px;"><strong>Contact Person:</strong> Attha Mauluna Isnainy Putrie</p>
+          </span>
+        </a>
+      </div>
+    </div>
+
+    <div class="divider reveal d4"></div>
+
+    <div class="center reveal d4" style="padding:18px 0;">
+      <div style="font-size:11pt;letter-spacing:.28em;text-transform:uppercase;color:var(--teal-dark);font-weight:700;">Terima Kasih</div>
+      <h1 class="cover-title" style="font-size:28pt;color:var(--purple-dark);margin-top:10px;">EXPORIA HIMATIF 2027</h1>
+      <p class="muted" style="text-align:center;">Bersama membangun generasi muda yang inovatif, kompetitif, dan bersatu.</p>
+    </div>
+  </div>
+  <div class="brandbar"></div>
+  <div class="pagenum">15</div>
+</section>
+
+</div><!-- /bookSource -->
+
+<!-- ================= LIGHTBOX ================= -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true">
+  <div class="lightbox-box">
+    <div id="lightboxArt"></div>
+    <div class="lightbox-cap">
+      <span id="lightboxTitle">Judul</span>
+      <button class="lightbox-close" id="lightboxClose">Tutup</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ---------- Scroll progress ---------- */
+  var progress = document.getElementById('progress');
+  function onScroll(){
+    var h = document.documentElement.scrollHeight - window.innerHeight;
+    var p = h > 0 ? (window.scrollY / h) * 100 : 0;
+    progress.style.width = p + '%';
+    updateNav();
+  }
+  window.addEventListener('scroll', onScroll, {passive:true});
+
+  /* ---------- Side nav active state ---------- */
+  var navLinks = Array.prototype.slice.call(document.querySelectorAll('.side-nav a'));
+  function updateNav(){
+    var best = null, bestDist = Infinity;
+    navLinks.forEach(function(a){
+      var el = document.getElementById(a.getAttribute('data-target'));
+      if(!el) return;
+      var d = Math.abs(el.getBoundingClientRect().top - 90);
+      if(d < bestDist){bestDist = d; best = a;}
+    });
+    navLinks.forEach(function(a){ a.classList.toggle('active', a === best); });
+  }
+  navLinks.forEach(function(a){
+    a.addEventListener('click', function(e){
+      e.preventDefault();
+      var el = document.getElementById(a.getAttribute('data-target'));
+      if(el) el.scrollIntoView({behavior:'smooth', block:'start'});
+    });
+  });
+
+  /* ---------- Reveal on scroll ---------- */
+  var revealEls = document.querySelectorAll('.reveal');
+  if('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); }
+      });
+    }, {threshold:0.12, rootMargin:'0px 0px -40px 0px'});
+    revealEls.forEach(function(el){ io.observe(el); });
+  } else {
+    revealEls.forEach(function(el){ el.classList.add('in'); });
+  }
+
+  /* ---------- Animated counters ---------- */
+  function animateCounter(el){
+    if(el.dataset.done) return;
+    el.dataset.done = '1';
+    var target = parseFloat(el.getAttribute('data-target')) || 0;
+    var suffix = el.getAttribute('data-suffix') || '';
+    var start = null, dur = 1300;
+    function step(ts){
+      if(!start) start = ts;
+      var p = Math.min((ts - start) / dur, 1);
+      var eased = 1 - Math.pow(1 - p, 3);
+      el.textContent = Math.round(target * eased) + suffix;
+      if(p < 1) requestAnimationFrame(step);
+      else el.textContent = target + suffix;
+    }
+    requestAnimationFrame(step);
+  }
+  var counters = document.querySelectorAll('.counter');
+  if('IntersectionObserver' in window){
+    var cio = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if(en.isIntersecting){ animateCounter(en.target); cio.unobserve(en.target); }
+      });
+    }, {threshold:0.4});
+    counters.forEach(function(c){ cio.observe(c); });
+  } else {
+    counters.forEach(function(c){ c.textContent = c.getAttribute('data-target') + (c.getAttribute('data-suffix')||''); });
+  }
+
+  /* ---------- Flip cards (tap on touch) ---------- */
+  document.querySelectorAll('.flip-card').forEach(function(card){
+    card.addEventListener('click', function(){ card.classList.toggle('flipped'); });
+    card.addEventListener('keydown', function(e){
+      if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); card.classList.toggle('flipped'); }
+    });
+  });
+
+  /* ---------- Rundown filters ---------- */
+  document.querySelectorAll('.chips').forEach(function(group){
+    var tableName = group.getAttribute('data-chips');
+    var table = document.querySelector('[data-table="' + tableName + '"]');
+    if(!table) return;
+    var rows = table.querySelectorAll('tbody tr');
+    group.querySelectorAll('.chip-btn').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        group.querySelectorAll('.chip-btn').forEach(function(b){ b.classList.remove('active'); });
+        btn.classList.add('active');
+        var f = btn.getAttribute('data-filter');
+        rows.forEach(function(r){
+          r.classList.remove('dim','hit');
+          if(f === 'all') return;
+          var tracks = (r.getAttribute('data-track') || '').split(/\s+/);
+          if(tracks.indexOf(f) !== -1) r.classList.add('hit');
+          else r.classList.add('dim');
+        });
+      });
+    });
+  });
+
+  /* ---------- Donut chart ---------- */
+  var segLens = {
+    acara:242.66, danus:97.34, konsumsi:51.33, pdd:23.09,
+    korlap:11.13, perlengkapan:5.54, sponsorship:5.01, humas:3.69
+  };
+  var segs = document.querySelectorAll('.donut-seg');
+  var legendBtns = document.querySelectorAll('.legend button');
+
+  function setDonut(){
+    segs.forEach(function(s){
+      var key = s.getAttribute('data-key');
+      var len = segLens[key] || 0;
+      s.style.strokeDasharray = len + ' 439.82';
+    });
+  }
+  if('IntersectionObserver' in window){
+    var dio = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if(en.isIntersecting){ setDonut(); dio.disconnect(); }
+      });
+    }, {threshold:0.3});
+    var donutEl = document.querySelector('.donut');
+    if(donutEl) dio.observe(donutEl);
+  } else { setDonut(); }
+
+  function highlight(key, on){
+    segs.forEach(function(s){
+      if(s.getAttribute('data-key') === key) s.classList.toggle('faded', !on);
+      else if(on) s.classList.add('faded');
+    });
+    legendBtns.forEach(function(b){
+      if(b.getAttribute('data-key') === key) b.classList.toggle('active', on);
+      else if(on) b.classList.remove('active');
+    });
+  }
+  segs.forEach(function(s){
+    s.addEventListener('mouseenter', function(){ highlight(s.getAttribute('data-key'), true); });
+    s.addEventListener('mouseleave', function(){ highlight(s.getAttribute('data-key'), false); });
+  });
+  legendBtns.forEach(function(b){
+    b.addEventListener('mouseenter', function(){ highlight(b.getAttribute('data-key'), true); });
+    b.addEventListener('mouseleave', function(){ highlight(b.getAttribute('data-key'), false); });
+    b.addEventListener('click', function(){
+      var key = b.getAttribute('data-key');
+      var already = b.classList.contains('active');
+      highlight(key, !already);
+    });
+  });
+
+  /* ---------- Bar chart ---------- */
+  var bars = document.querySelectorAll('.bar-fill');
+  function fillBars(){
+    bars.forEach(function(b){
+      var pct = parseFloat(b.getAttribute('data-pct')) || 0;
+      b.style.width = Math.max(pct, 1.5) + '%';
+    });
+  }
+  if('IntersectionObserver' in window){
+    var bio = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if(en.isIntersecting){ fillBars(); bio.disconnect(); }
+      });
+    }, {threshold:0.25});
+    var barsEl = document.querySelector('.bars');
+    if(barsEl) bio.observe(barsEl);
+  } else { fillBars(); }
+
+  /* ---------- Tier selection ---------- */
+  var tierCards = document.querySelectorAll('.tier');
+  var tierName = document.getElementById('tierName');
+  var tierPrice = document.getElementById('tierPrice');
+  tierCards.forEach(function(card){
+    function choose(){
+      var was = card.classList.contains('selected');
+      tierCards.forEach(function(c){ c.classList.remove('selected'); });
+      if(was){
+        tierName.textContent = 'Belum dipilih';
+        tierPrice.textContent = '\u2013';
+        return;
+      }
+      card.classList.add('selected');
+      tierName.textContent = card.getAttribute('data-tier');
+      tierPrice.textContent = card.getAttribute('data-price');
+    }
+    card.addEventListener('click', choose);
+    card.addEventListener('keydown', function(e){
+      if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); choose(); }
+    });
+  });
+
+  /* ---------- Compare toggle ---------- */
+  var compareBtn = document.getElementById('compareBtn');
+  var compareTable = document.getElementById('compareTable');
+  if(compareBtn && compareTable){
+    compareBtn.addEventListener('click', function(){
+      var open = compareTable.classList.toggle('open');
+      compareBtn.textContent = open ? 'Sembunyikan perbandingan' : 'Bandingkan semua paket';
+    });
+  }
+
+  /* ---------- Org accordion ---------- */
+  document.querySelectorAll('.org-item').forEach(function(item){
+    var head = item.querySelector('.org-head');
+    if(!head) return;
+    head.addEventListener('click', function(){
+      var open = item.classList.contains('open');
+      document.querySelectorAll('.org-item').forEach(function(i){ i.classList.remove('open'); });
+      if(!open) item.classList.add('open');
+    });
+  });
+
+  /* ---------- Gallery lightbox ---------- */
+  var lightbox = document.getElementById('lightbox');
+  var lightboxArt = document.getElementById('lightboxArt');
+  var lightboxTitle = document.getElementById('lightboxTitle');
+  var lightboxClose = document.getElementById('lightboxClose');
+
+  function openLightbox(item){
+    var svg = item.querySelector('svg');
+    if(!svg) return;
+    lightboxArt.innerHTML = svg.outerHTML;
+    lightboxTitle.textContent = item.getAttribute('data-title') || '';
+    lightbox.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLightbox(){
+    lightbox.classList.remove('open');
+    document.body.style.overflow = '';
+    lightboxArt.innerHTML = '';
+  }
+  document.querySelectorAll('.gallery-item').forEach(function(item){
+    item.addEventListener('click', function(){ openLightbox(item); });
+  });
+  if(lightboxClose) lightboxClose.addEventListener('click', closeLightbox);
+  if(lightbox) lightbox.addEventListener('click', function(e){
+    if(e.target === lightbox) closeLightbox();
+  });
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape') closeLightbox();
+  });
+
+  /* ---------- Copy buttons ---------- */
+  document.querySelectorAll('.copy-btn').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var text = btn.getAttribute('data-copy') || '';
+      function done(){
+        var old = btn.textContent;
+        btn.textContent = 'Tersalin!';
+        setTimeout(function(){ btn.textContent = old; }, 1400);
+      }
+      if(navigator.clipboard && navigator.clipboard.writeText){
+        navigator.clipboard.writeText(text).then(done).catch(done);
+      } else {
+        var ta = document.createElement('textarea');
+        ta.value = text; document.body.appendChild(ta); ta.select();
+        try { document.execCommand('copy'); } catch(err){}
+        document.body.removeChild(ta); done();
+      }
+    });
+  });
+
+  /* ---------- Cover parallax ---------- */
+  var cover = document.querySelector('.cover');
+  var blobs = document.querySelectorAll('.cover .blob');
+  if(cover && blobs.length && window.matchMedia('(pointer:fine)').matches){
+    cover.addEventListener('mousemove', function(e){
+      var r = cover.getBoundingClientRect();
+      var x = (e.clientX - r.left) / r.width - 0.5;
+      var y = (e.clientY - r.top) / r.height - 0.5;
+      blobs.forEach(function(b, i){
+        var k = (i + 1) * 9;
+        b.style.transform = 'translate(' + (x * k) + 'px,' + (y * k) + 'px)';
+      });
+    });
+    cover.addEventListener('mouseleave', function(){
+      blobs.forEach(function(b){ b.style.transform = ''; });
+    });
+  }
+
+  /* ---------- FLIPBOOK ---------- */
+  var FLIP_MS = 620;
+  var bookSource = document.getElementById('bookSource');
+  var bookPages = Array.prototype.slice.call(bookSource.querySelectorAll('.page'));
+  var fbLeft = document.getElementById('fbLeft');
+  var fbRight = document.getElementById('fbRight');
+  var fbLeftInner = document.getElementById('fbLeftInner');
+  var fbRightInner = document.getElementById('fbRightInner');
+  var fbPrev = document.getElementById('fbPrev');
+  var fbNext = document.getElementById('fbNext');
+  var fbRoll = document.getElementById('fbRoll');
+  var fbIndicator = document.getElementById('fbIndicator');
+  var fbStage = document.getElementById('fbStage');
+
+  var fbIndex = 0;
+  var fbBusy = false;
+
+  var PW = 793.7, PH = 1122.5;
+  var fbScale = 1;
+
+  function computeScale(hostEl){
+    var w = hostEl.clientWidth, h = hostEl.clientHeight;
+    if(!w || !h) return fbScale;
+    return Math.min(w / PW, h / PH);
+  }
+  function fitPage(el, scale){
+    if(scale === undefined) scale = computeScale(el.parentElement);
+    if(!scale || !isFinite(scale)) return;
+    el.style.transformOrigin = 'top left';
+    el.style.transform = 'scale(' + scale + ')';
+  }
+  function fitAll(){
+    fbScale = computeScale(fbLeft) || computeScale(fbRight) || fbScale;
+    fitPage(fbLeftInner, fbScale);
+    fitPage(fbRightInner, fbScale);
+  }
+
+  function clonePage(idx){
+    if(idx < 0 || idx >= bookPages.length) return null;
+    var c = bookPages[idx].cloneNode(true);
+    c.removeAttribute('id');
+    c.style.position = 'absolute';
+    c.style.top = '0';
+    c.style.left = '0';
+    c.style.margin = '0';
+    c.style.boxShadow = 'none';
+    c.style.minHeight = '297mm';
+    c.style.height = '297mm';
+    c.classList.add('in');
+    c.querySelectorAll('.reveal').forEach(function(r){ r.classList.add('in'); });
+    return c;
+  }
+
+  function paint(){
+    var cur = clonePage(fbIndex);
+    var mobile = window.matchMedia("(max-width:700px)").matches;
+    var nx = mobile ? null : clonePage(fbIndex + 1);
+    fbLeftInner.innerHTML = '';
+    fbRightInner.innerHTML = '';
+    fbLeft.style.visibility = cur ? 'visible' : 'hidden';
+    fbRight.style.visibility = nx ? 'visible' : 'hidden';
+    if(cur) fbLeftInner.appendChild(cur);
+    if(nx) fbRightInner.appendChild(nx);
+    fbIndicator.textContent = (fbIndex + 1) + ' / ' + bookPages.length;
+    fbPrev.disabled = fbIndex <= 0;
+    fbNext.disabled = fbIndex >= bookPages.length - 1;
+    requestAnimationFrame(function(){ fitAll(); activateVisiblePages(); });
+  }
+
+  function easeInOut(t){
+    return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  }
+
+  function flipTo(next){
+    if(fbBusy || next === fbIndex) return;
+    if(next < 0 || next >= bookPages.length) return;
+    if(window.matchMedia('(max-width:700px)').matches){
+      fbBusy=true;
+      fbLeft.style.transition='opacity .18s ease';
+      fbLeft.style.opacity='0.35';
+      setTimeout(function(){fbIndex=next;fbBusy=false;paint();fbLeft.style.opacity='1';},180);
+      return;
+    }
+    fbBusy = true;
+
+    var forward = next > fbIndex;
+    var sheet = document.createElement('div');
+    var inner = document.createElement('div');
+    inner.className = 'page-scale';
+    inner.style.cssText = 'width:210mm;height:297mm;transform-origin:top left;position:absolute;top:0;left:0;';
+
+    sheet.style.cssText =
+      'position:absolute;top:0;height:100%;width:50%;max-width:430px;z-index:60;' +
+      'background:#fff;overflow:hidden;transform-style:preserve-3d;backface-visibility:hidden;' +
+      'will-change:transform;box-shadow:0 18px 50px rgba(22,33,58,.28);';
+    sheet.style.transform = 'rotateY(0deg)';
+
+    var moving = clonePage(fbIndex);
+    if(moving) inner.appendChild(moving);
+
+    if(forward){
+      sheet.style.left = '50%';
+      sheet.style.transformOrigin = 'left center';
+      sheet.style.borderRadius = '0 16px 16px 0';
+      var incoming = clonePage(next);
+      fbRightInner.innerHTML = '';
+      if(incoming) fbRightInner.appendChild(incoming);
+      fbLeft.style.visibility = 'visible';
+      fbRight.style.visibility = 'visible';
+    } else {
+      sheet.style.left = '0';
+      sheet.style.transformOrigin = 'right center';
+      sheet.style.borderRadius = '16px 0 0 16px';
+      var incoming2 = clonePage(next);
+      fbLeftInner.innerHTML = '';
+      if(incoming2) fbLeftInner.appendChild(incoming2);
+      fbLeft.style.visibility = 'visible';
+      fbRight.style.visibility = 'visible';
+    }
+
+    sheet.appendChild(inner);
+    fbStage.appendChild(sheet);
+    fitAll();
+    fitPage(inner, fbScale);
+
+    var from = 0;
+    var to = forward ? -180 : 180;
+    var start = null;
+    var dur = FLIP_MS;
+    var finished = false;
+    var fallback = null;
+
+    function finish(){
+      if(finished) return;
+      finished = true;
+      if(fallback) clearTimeout(fallback);
+      try { sheet.remove(); } catch(err){}
+      fbIndex = next;
+      fbBusy = false;
+      paint();
+    }
+
+    function step(ts){
+      if(finished) return;
+      if(start === null) start = ts;
+      var p = (ts - start) / dur;
+      if(p < 0) p = 0;
+      if(p > 1) p = 1;
+      var e = easeInOut(p);
+      var deg = from + (to - from) * e;
+      sheet.style.transform = 'rotateY(' + deg + 'deg)';
+      var shade = Math.sin(p * Math.PI) * 0.35;
+      sheet.style.boxShadow = '0 18px 50px rgba(22,33,58,' + (0.28 + shade) + ')';
+      if(p < 1){
+        requestAnimationFrame(step);
+      } else {
+        finish();
+      }
+    }
+    fallback = setTimeout(finish, dur + 400);
+    requestAnimationFrame(step);
+  }
+
+  fbPrev.addEventListener('click', function(){ flipTo(fbIndex - 1); });
+  fbNext.addEventListener('click', function(){ flipTo(fbIndex + 1); });
+
+  var fbAuto = false;
+  var fbAutoTimer = null;
+
+  function stopAuto(){
+    fbAuto = false;
+    if(fbAutoTimer){ clearTimeout(fbAutoTimer); fbAutoTimer = null; }
+    fbRoll.textContent = 'Animasi Geser';
+  }
+
+  function autoStep(){
+    if(!fbAuto) return;
+    if(fbIndex >= bookPages.length - 1){
+      stopAuto();
+      return;
+    }
+    if(fbBusy){
+      fbAutoTimer = setTimeout(autoStep, 100);
+      return;
+    }
+    flipTo(fbIndex + 1);
+    fbAutoTimer = setTimeout(autoStep, FLIP_MS + 180);
+  }
+
+  fbRoll.addEventListener('click', function(){
+    if(fbAuto){
+      stopAuto();
+      return;
+    }
+    fbAuto = true;
+    fbRoll.textContent = 'Hentikan';
+    if(fbIndex >= bookPages.length - 1){
+      fbIndex = 0;
+      paint();
+    }
+    fbAutoTimer = setTimeout(autoStep, 180);
+  });
+
+  fbLeft.addEventListener('click', function(e){ if(!e.target.closest('button,a,[tabindex],.gallery-item,.toc li,.org-head,.flip-card,.donut-seg')) flipTo(fbIndex - 1); });
+  fbRight.addEventListener('click', function(e){ if(!e.target.closest('button,a,[tabindex],.gallery-item,.toc li,.org-head,.flip-card,.donut-seg')) flipTo(fbIndex + 1); });
+
+  document.addEventListener('keydown', function(e){
+    if(e.target && /INPUT|TEXTAREA/.test(e.target.tagName)) return;
+    if(e.target && e.target.closest('[role=dialog],button,[tabindex],a')) return;
+    if(e.key === 'ArrowRight' || e.key === 'PageDown'){ e.preventDefault(); flipTo(fbIndex + 1); }
+    if(e.key === 'ArrowLeft' || e.key === 'PageUp'){ e.preventDefault(); flipTo(fbIndex - 1); }
+  });
+
+  var touchX = null, touchY = null, touchT = 0;
+  fbStage.addEventListener('touchstart', function(e){
+    touchX = e.touches[0].clientX;
+    touchY = e.touches[0].clientY;
+    touchT = Date.now();
+  }, {passive:true});
+  fbStage.addEventListener('touchend', function(e){
+    if(touchX === null) return;
+    var dx = e.changedTouches[0].clientX - touchX;
+    var dy = e.changedTouches[0].clientY - touchY;
+    var dt = Date.now() - touchT;
+    var horizontal = Math.abs(dx) > Math.abs(dy) * 1.4;
+    var fast = Math.abs(dx) / Math.max(dt, 1) > 0.25;
+    if(horizontal && (Math.abs(dx) > 40 || (fast && Math.abs(dx) > 18))){
+      flipTo(dx < 0 ? fbIndex + 1 : fbIndex - 1);
+    }
+    touchX = null; touchY = null;
+  }, {passive:true});
+
+
+  /* === FIX: Bind interactions to the VISIBLE cloned pages, not hidden originals === */
+  function activateVisiblePages(){
+    [fbLeftInner,fbRightInner].forEach(function(root){
+      if(!root) return;
+      root.querySelectorAll('.counter').forEach(function(el){ animateCounter(el); });
+      root.querySelectorAll('.bar-fill').forEach(function(el){
+        var pct = parseFloat(el.dataset.pct) || 0;
+        el.style.width = '0%';
+        requestAnimationFrame(function(){ requestAnimationFrame(function(){ el.style.width = Math.max(1.5,pct) + '%'; }); });
+      });
+      root.querySelectorAll('.donut-seg').forEach(function(el){
+        var len = segLens[el.dataset.key] || 0;
+        el.style.strokeDasharray = '0 439.82';
+        requestAnimationFrame(function(){ requestAnimationFrame(function(){ el.style.strokeDasharray = len + ' 439.82'; }); });
+      });
+      root.querySelectorAll('svg animate').forEach(function(el){
+        try { el.beginElement(); } catch(err){}
+      });
+    });
+  }
+
+  function goToPage(id){
+    var index = bookPages.findIndex(function(p){return p.id === id;});
+    if(index < 0 || fbBusy) return;
+    stopAuto();
+    if(index === fbIndex || index === fbIndex + 1) return;
+    fbIndex = index;
+    paint();
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+
+  // Capture links and inline TOC clicks before their old scroll handlers.
+  document.addEventListener('click',function(e){
+    var nav = e.target.closest('.side-nav a[data-target]');
+    if(nav){ e.preventDefault(); e.stopImmediatePropagation(); goToPage(nav.dataset.target); return; }
+    var toc = e.target.closest('#fbStage .toc li');
+    if(toc){
+      e.preventDefault(); e.stopPropagation();
+      var old = toc.getAttribute('onclick') || '';
+      var match = old.match(/getElementById\(['"](p\d+)['"]\)/);
+      if(match) goToPage(match[1]);
+    }
+  },true);
+
+  fbStage.addEventListener('click',function(e){
+    var card=e.target.closest('.flip-card');
+    if(card){card.classList.toggle('flipped');return;}
+    var chip=e.target.closest('.chip-btn');
+    if(chip){
+      var group=chip.closest('.chips');
+      var page=chip.closest('.page');
+      if(!group || !page)return;
+      group.querySelectorAll('.chip-btn').forEach(function(b){b.classList.toggle('active',b===chip);});
+      var table=Array.from(page.querySelectorAll('[data-table]')).find(function(t){return t.dataset.table===group.dataset.chips;});
+      if(table)table.querySelectorAll('tbody tr').forEach(function(row){
+        var hit=chip.dataset.filter==='all'||(row.dataset.track||'').split(/\s+/).includes(chip.dataset.filter);
+        row.classList.toggle('dim',!hit);row.classList.toggle('hit',hit&&chip.dataset.filter!=='all');
+      });
+      return;
+    }
+    var tier=e.target.closest('.tier');
+    if(tier){
+      var page=tier.closest('.page'),was=tier.classList.contains('selected');
+      page.querySelectorAll('.tier').forEach(function(el){el.classList.remove('selected');});
+      if(!was)tier.classList.add('selected');
+      var name=page.querySelector('#tierName'),price=page.querySelector('#tierPrice');
+      if(name)name.textContent=was?'Belum dipilih':tier.dataset.tier;
+      if(price)price.textContent=was?'–':tier.dataset.price;
+      return;
+    }
+    var compare=e.target.closest('#compareBtn');
+    if(compare){
+      var target=compare.closest('.page').querySelector('#compareTable');
+      if(target){var open=target.classList.toggle('open');compare.textContent=open?'Sembunyikan perbandingan':'Bandingkan semua paket';}
+      return;
+    }
+    var head=e.target.closest('.org-head');
+    if(head){
+      var item=head.closest('.org-item'),was=item.classList.contains('open');
+      item.closest('.page').querySelectorAll('.org-item').forEach(function(el){el.classList.remove('open');});
+      if(!was)item.classList.add('open');
+      return;
+    }
+    var gallery=e.target.closest('.gallery-item');
+    if(gallery){
+      var svg=gallery.querySelector('svg'),img=gallery.querySelector('img');
+      if(lightbox && lightboxArt){
+        lightboxArt.innerHTML=svg?svg.outerHTML:(img?img.outerHTML:'');
+        lightboxTitle.textContent=gallery.dataset.title||'';
+        lightbox.classList.add('open');document.body.style.overflow='hidden';
+      }
+      return;
+    }
+    var copy=e.target.closest('.copy-btn');
+    if(copy){
+      var val=copy.dataset.copy||'';
+      function copied(){var old=copy.textContent;copy.textContent='Tersalin!';setTimeout(function(){copy.textContent=old;},1400);}
+      if(navigator.clipboard && window.isSecureContext){navigator.clipboard.writeText(val).then(copied).catch(function(){fallbackCopy(val);copied();});}
+      else{fallbackCopy(val);copied();}
+      return;
+    }
+    var legend=e.target.closest('.legend button');
+    if(legend){
+      var page=legend.closest('.page'),key=legend.dataset.key,active=!legend.classList.contains('active');
+      page.querySelectorAll('.legend button').forEach(function(b){b.classList.toggle('active',active&&b.dataset.key===key);});
+      page.querySelectorAll('.donut-seg').forEach(function(seg){seg.classList.toggle('faded',active&&seg.dataset.key!==key);});
+    }
+  });
+  function fallbackCopy(value){var t=document.createElement('textarea');t.value=value;document.body.appendChild(t);t.select();try{document.execCommand('copy');}catch(err){}t.remove();}
+  fbStage.addEventListener('mouseover',function(e){
+    var target=e.target.closest('.donut-seg,.legend button');if(!target)return;
+    var page=target.closest('.page'),key=target.dataset.key;
+    if(!page)return;
+    page.querySelectorAll('.donut-seg').forEach(function(el){el.classList.toggle('faded',el.dataset.key!==key);});
+  });
+  fbStage.addEventListener('mouseout',function(e){
+    var target=e.target.closest('.donut-seg,.legend button');if(!target)return;
+    var page=target.closest('.page');if(!page)return;
+    if(page.querySelector('.legend button.active'))return;
+    page.querySelectorAll('.donut-seg').forEach(function(el){el.classList.remove('faded');});
+  });
+  fbStage.addEventListener('keydown',function(e){
+    if(e.key!=='Enter'&&e.key!==' ')return;
+    var target=e.target.closest('.flip-card,.tier');
+    if(target){e.preventDefault();target.click();}
+  });
+
+  window.addEventListener('resize', function(){paint();fitAll();});
+  var zoomBtn=document.getElementById('fbZoom');
+  if(zoomBtn){zoomBtn.addEventListener('click',function(){
+    var on=document.getElementById('flipbook').classList.toggle('zoom-active');
+    zoomBtn.textContent=on?'🔎 Ukuran Normal':'🔍 Perbesar';
+    zoomBtn.setAttribute('aria-pressed',String(on));
+    requestAnimationFrame(fitAll);
+  });}
+
+
+  if(bookPages.length){ paint(); }
+
+  onScroll();
+})();
+</script>
+
+<!-- Perbandingan paket: panel baca penuh, tidak terpotong ukuran halaman -->
+<style>
+  #sponsorCompareOverlay{position:fixed;inset:0;z-index:3000;background:rgba(14,19,40,.78);display:none;align-items:center;justify-content:center;padding:clamp(10px,3vw,32px);backdrop-filter:blur(7px)}
+  #sponsorCompareOverlay.open{display:flex}
+  .sponsor-compare-dialog{width:min(1100px,100%);max-height:calc(100dvh - 24px);background:white;border-radius:18px;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 25px 80px #0006}
+  .sponsor-compare-header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 20px;background:linear-gradient(100deg,#3d1f7a,#6c3fc5);color:white;flex:none}
+  .sponsor-compare-header h2{border:0;margin:0;padding:0;color:white;font-size:clamp(16px,2.5vw,23px)}
+  #sponsorCompareClose{background:white;color:#3d1f7a;border:0;border-radius:9px;padding:9px 14px;cursor:pointer;font-weight:700}
+  .sponsor-compare-scroll{overflow:auto;overscroll-behavior:contain;min-height:0;flex:1;padding:16px;-webkit-overflow-scrolling:touch}
+  .sponsor-compare-scroll table{min-width:670px;width:100%;font-size:clamp(11px,1.4vw,14px);margin:0}
+  .sponsor-compare-scroll th{position:sticky;top:0;z-index:1}
+  .sponsor-compare-scroll td,.sponsor-compare-scroll th{padding:12px 10px}
+  .sponsor-compare-help{font-size:12px;color:#42506b;margin:0 0 12px}
+  @media(max-width:700px){.sponsor-compare-dialog{max-height:calc(100dvh - 16px)}.sponsor-compare-scroll{padding:12px}.sponsor-compare-header{padding:12px}}
+</style>
+<div id="sponsorCompareOverlay" role="dialog" aria-modal="true" aria-labelledby="sponsorCompareTitle" aria-hidden="true">
+ <div class="sponsor-compare-dialog">
+  <div class="sponsor-compare-header"><h2 id="sponsorCompareTitle">Perbandingan Paket Sponsorship</h2><button id="sponsorCompareClose" type="button">✕ Tutup</button></div>
+  <div class="sponsor-compare-scroll" id="sponsorCompareContent" tabindex="0"></div>
+ </div>
+</div>
+<script>
+(function(){
+ const overlay=document.getElementById('sponsorCompareOverlay');
+ const content=document.getElementById('sponsorCompareContent');
+ const closeBtn=document.getElementById('sponsorCompareClose');
+ let previousFocus=null;
+ function close(){overlay.classList.remove('open');overlay.setAttribute('aria-hidden','true');document.body.style.overflow='';if(previousFocus&&previousFocus.isConnected)previousFocus.focus();}
+ function open(btn){
+   const page=btn.closest('.page');const source=page&&page.querySelector('#compareTable table');
+   if(!source)return;
+   previousFocus=btn;
+   content.replaceChildren();
+   const note=document.createElement('p');note.className='sponsor-compare-help';note.textContent='Geser tabel ke samping untuk melihat semua paket. Scroll ke bawah untuk membaca seluruh benefit.';
+   content.append(note,source.cloneNode(true));
+   overlay.classList.add('open');overlay.setAttribute('aria-hidden','false');
+   document.body.style.overflow='hidden';content.scrollTop=0;content.scrollLeft=0;closeBtn.focus();
+ }
+ // Capture sebelum handler flipbook lama agar tabel tidak dibuka di dalam halaman A4 yang terpotong.
+ document.addEventListener('click',function(e){const btn=e.target.closest('#fbStage #compareBtn');if(btn){e.preventDefault();e.stopImmediatePropagation();open(btn);}},true);
+ closeBtn.addEventListener('click',close);
+ overlay.addEventListener('click',e=>{if(e.target===overlay)close();});
+ document.addEventListener('keydown',e=>{if(!overlay.classList.contains('open'))return;if(e.key==='Escape'){e.preventDefault();e.stopImmediatePropagation();close();}else if(e.key==='Tab'){e.preventDefault();closeBtn.focus();}},true);
+})();
+</script>
+</body>
+</html>
